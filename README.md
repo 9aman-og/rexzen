@@ -1,17 +1,36 @@
-# Rexzen and Aero
+# Rexzen
 
-Live website: https://rexzen.si
+AI software and research.
 
-## Complete source snapshot — version 10
+## Current site
 
-Download `rexzen-source-v10.zip` and unzip it into a local folder. It contains all 48 tracked files for the live company website and Aero application, including public assets, Worker/server code, database schema and migrations, build script, package manifest and lockfile. Follow the README inside the archive to build it.
+- Public website: https://rexzen.si
+- Aero workspace: https://rexzen.si/aero
+- Published release: v15
+- Exact source: `121ab4041edeef0b1c27c7124b31c847aa67eb20`
+- Complete source archive: `rexzen-aero-v15-source.zip`
 
-Live source commit: `53e7bd2213d7bf07aaaaf7f6af2219471a59934a`. Published 1 October 2026.
+## This release
 
-Archive SHA-256: `6d9d8f131ca8e04d540d4e52362219c70adf7f5ec42670966a20baff2f5ee76a`.
+A full-screen, keyboard-accessible directory with editorial previews. Original finite homepage animation, page sweeps and bounded scroll motion. A rebuilt 2piarc page and identity. Aero walkthrough layout repaired. Canonical metadata, structured data, robots.txt and an eight-page sitemap.
 
-This repository currently stores the complete editable source inside a ZIP. It is not yet an expanded GitHub working tree. The root `index.html`, `styles.css` and `favicon.svg` are the initial draft; the live release is built and hosted through the existing Sites project.
+## Repository boundaries
 
-## Privacy
+This is the private Rexzen backup repository. Sonne Systems is maintained separately. Source archives exclude credentials, local context, personal workspace records and original PDF manuscripts. Public paper downloads use encrypted envelopes; passwords stay outside source control.
 
-Credentials, passwords, private account records, original PDFs, screenshots, local context, build output and dependencies are excluded. Research files inside the snapshot are password-encrypted envelopes; the password is excluded. Sonne Systems remains unchanged.
+## Source archive
+
+Download and extract `rexzen-aero-v15-source.zip` before building. It contains all 71 tracked source files from the exact published commit. SHA-256: `b90e868c774652cdf91e50c27356bfd26d9e9d6991ef8f6dde1d46c342c5ac5a`. The root HTML, CSS and favicon in this backup repository are an earlier prototype. The current source is inside the ZIP.
+
+## Structure inside the archive
+
+`public/` contains the public pages, styles, scripts and original imagery. `server/` and `worker/` provide the application runtime. `drizzle/` contains database migrations. `scripts/build.mjs` packages the Worker and versioned public assets.
+
+## Local build
+
+```sh
+npm ci
+npm run build
+```
+
+Live provider credentials belong in server secrets and are scoped to the signed-in account. They must not be added to this repository or browser assets.
