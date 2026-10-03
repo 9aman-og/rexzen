@@ -2,45 +2,38 @@
 
 AI software and research.
 
-## Current site
+## Current release
 
-- Public website: https://rexzen.si
-- Aero workspace: https://rexzen.si/aero
-- Published release: v16
-- Exact source: `1e73d9df5e87e9cc4dff60ef628b7deed063cebb`
-- Complete source archive: `rexzen-aero-v16-source.zip`
+Public website: https://rexzen.si
+Aero workspace: https://rexzen.si/aero
+Published release: v18
+Exact source: `43378cfce56f8c3930b4082a664c305bb4ce265c`
+Complete source archive: `rexzen-motion-v18-source.zip`
 
 ## This release
 
-A conversation-first Aero workspace with a charcoal navigation sidebar, selected-source chips, a searchable context inspector and visible relationships. Inspect records without selecting them. Question drafts, model choice and context selection survive view changes. Recent requests remain available from the sidebar.
+Original material films for Rexzen and Aero, with a finite play cycle, Pause, Replay and seeking. The large identity entrance uses staggered letter opacity; a frosted three-pane transition carries public page changes. Initial browser layout stabilization preserves the entrance. Reduced motion, hidden pages, focus, menu actions, offscreen views and meaningful resizing stop active motion.
 
-Every AI dispatch retains its explicit request review. Expired reviews require a fresh review; requests never retry automatically. A delayed answer updates saved history without replacing a different conversation or a new draft. New answers retain the exact reviewed source excerpts inside encrypted conversation storage. Older answers without snapshots show that limitation explicitly. Each request uses the sources selected for that request; previous conversations are not automatically sent as context. Plan acceptance saves the complete reviewed plan.
+The directory previews crossfade decoded imagery. 2piarc combines an original material study with a manual interactive form study. The Aero workflow remains fictional and clearly labelled. LinkedIn and Instagram destinations are verified. Public pages have canonical URLs, page-specific share images, structured data and an eight-page sitemap. Search discovery is distinct from indexing.
 
-Original character-opacity headline assembly settles back to ordinary text. It coordinates with the page sweep and respects reduced motion, focus, hidden pages and menu changes. The finite homepage scene, full-screen directory, 2piarc identity, scroll motion and eight-page sitemap remain in place.
+Aero's request review, selected-source boundaries, encrypted per-account provider settings and proposal approval flow are retained from v16. This release does not add model-training claims.
 
-## Repository boundaries
+## Repository boundary
 
-This is the private Rexzen backup repository. Sonne Systems is maintained separately. Archives exclude credentials, local context, personal workspace records and original PDF manuscripts. Public paper downloads use encrypted envelopes; passwords stay outside source control.
+This private repository contains a sanitized backup. Sonne Systems is maintained separately. Archives exclude credentials, local context, personal workspace records, source PDF manuscripts, local research-run artifacts and private reel previews. Public paper downloads use encrypted envelopes; passwords remain outside source control.
 
 ## Source archive
 
-Download and extract `rexzen-aero-v16-source.zip` before building. It contains all 73 tracked source files from the exact published commit.
+Extract `rexzen-motion-v18-source.zip` before building. It contains 94 entries from the exact published source commit. The root HTML/CSS/favicon in this repository are an earlier prototype; current source is inside the ZIP.
 
-SHA-256: `d9b994a4c987155a397b29f9b89d4744ed7fe459bedd6139e1de51d2da149e18`
+SHA-256: `fe2059e2cacecbbde4d443c240b88b67e9803a2710bb1aac4d0e2bc96dc268ca`
+Archive size: 6084261 bytes.
 
-Archive size: 5285656 bytes.
-
-The root HTML, CSS and favicon in this backup repository are an earlier prototype. The current source is inside the ZIP.
-
-## Structure inside the archive
-
-`public/` contains the pages, styles, scripts and original imagery. `server/` and `worker/` provide the application runtime. `drizzle/` contains database migrations. `scripts/build.mjs` packages the Worker and versioned public assets.
-
-## Local build
+`public/` contains the pages, styles, scripts and original media. `server/` and `worker/` contain the runtime. `drizzle/` contains migrations. `scripts/build.mjs` packages the Worker and versioned assets.
 
 ```sh
-npm ci
-npm run build
+pnpm install --frozen-lockfile
+pnpm run build
 ```
 
-Live provider credentials belong in server secrets and are scoped to the signed-in account. They must not be added to this repository or browser assets.
+Live credentials belong in private server secrets scoped to the signed-in account.
