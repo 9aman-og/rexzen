@@ -36,7 +36,7 @@ jobs:
           from pathlib import Path, PurePosixPath
           from html.parser import HTMLParser
           from urllib.parse import urlsplit, urlunsplit, unquote
-          import hashlib, json, os, re, shutil, tarfile
+          import hashlib, json, os, re, shutil, subprocess, tarfile
           
           ARCHIVE = Path(os.environ.get('REXZEN_SOURCE_ARCHIVE', 'rexzen-v2-source.tar.gz'))
           OUTPUT = Path(os.environ.get('REXZEN_PAGES_OUT', '_site'))
@@ -51,6 +51,8 @@ jobs:
           
           assert hashlib.sha256(ARCHIVE.read_bytes()).hexdigest() == EXPECTED, 'Source archive checksum mismatch'
           files = {}
+          metadata_source = None
+          text_source = None
           with tarfile.open(ARCHIVE) as source:
               for entry in source.getmembers():
                   if not entry.isfile():
@@ -58,12 +60,43 @@ jobs:
                       continue
                   path = PurePosixPath(entry.name)
                   assert not path.is_absolute() and '..' not in path.parts
+                  if entry.name == 'rexzen-site/scripts/rebuild-metadata.mjs':
+                      metadata_source = source.extractfile(entry).read().decode()
+                  elif entry.name == 'rexzen-site/scripts/build.mjs':
+                      build_source = source.extractfile(entry).read().decode()
+                      text_source = build_source[build_source.index('function decodeText('):build_source.index('function metadata(')]
                   prefix = 'rexzen-site/public/'
                   if not entry.name.startswith(prefix):
                       continue
                   name = entry.name[len(prefix):]
                   if name.startswith(('2/',) + SHARED) or name in SHARED_FILES:
                       files[name] = source.extractfile(entry).read()
+          
+          # Apply the same reviewed metadata and text generators as the original build.
+          # The static export must include generated content, not only raw public files.
+          assert metadata_source and text_source
+          metadata_driver = metadata_source + '\n' + text_source + r'''
+          const {readFileSync}=await import('node:fs');
+          const input=JSON.parse(readFileSync(0,'utf8'));
+          const result={}, texts=[];
+          for(const [name,raw] of Object.entries(input.pages)){
+            const route=rebuildRoutes.get(name.slice(2));
+            if(route===undefined)throw new Error('Unknown public page: '+name);
+            const html=rebuildMetadata(raw.replace(/(<link rel="canonical" href=")\/(.*?)"/g,'$1https://rexzen.si/$2"'),route,input.catalog);
+            result[name]=html;
+            const text=pageText(html.replace(/<br\s*\/?>/gi,' '),'/2'+route);
+            result[route==='/'?'2/index.md':'2'+route+'.md']=text;
+            texts.push(text);
+          }
+          result['2/llms-full.txt']='# Rexzen second-edition public pages\n\nPrivate workspace content is not included.\n\n'+texts.join('\n\n---\n\n');
+          process.stdout.write(JSON.stringify(result));
+          '''
+          generated = subprocess.run(
+              [os.environ.get('REXZEN_NODE', 'node'), '--input-type=module', '-e', metadata_driver],
+              input=json.dumps({'pages': {name: body.decode() for name, body in files.items() if name.startswith('2/') and name.endswith('.html')}, 'catalog': json.loads(files['research-catalog.json'])}),
+              text=True, capture_output=True, check=True,
+          )
+          files.update({name: body.encode() for name, body in json.loads(generated.stdout).items()})
           
           def mapped(value):
               parsed = urlsplit(value)
@@ -105,7 +138,7 @@ jobs:
                   assert route in ROUTES, name
                   destination = ROUTES[route]
               editable = name.startswith('2/') and '/vendor/' not in name or name in {'research-papers.js', 'research-papers.css', 'research-catalog.json'}
-              if editable and Path(name).suffix in {'.html', '.css', '.js', '.json', '.xml', '.txt', '.svg'}:
+              if editable and Path(name).suffix in {'.html', '.css', '.js', '.json', '.xml', '.txt', '.svg', '.md'}:
                   content = rewrite(content.decode()).encode()
               target = OUTPUT / destination
               target.parent.mkdir(parents=True, exist_ok=True)
@@ -130,6 +163,8 @@ jobs:
               def __init__(self, text):
                   super().__init__()
                   self.references, self.ids, self.canonical = [], set(), []
+                  self.metadata, self.schemas = {}, []
+                  self.json_ld = None
                   self.feed(text)
               def handle_starttag(self, tag, attributes):
                   attrs = dict(attributes)
@@ -137,9 +172,23 @@ jobs:
                       self.ids.add(attrs['id'])
                   if tag == 'link' and attrs.get('rel') == 'canonical':
                       self.canonical.append(attrs.get('href'))
+                  if tag == 'meta':
+                      key = attrs.get('property') or attrs.get('name')
+                      self.metadata[key] = attrs.get('content')
+                      if key in {'og:image', 'twitter:image'}:
+                          self.references.append(attrs.get('content'))
+                  if tag == 'script' and attrs.get('type') == 'application/ld+json':
+                      self.json_ld = ''
                   for key, value in attributes:
                       if value and (key in {'href', 'src', 'poster'} or key in {'data-src', 'data-src-mobile', 'data-poster-mobile', 'data-paper-file'}):
                           self.references.append(value)
+              def handle_data(self, data):
+                  if self.json_ld is not None:
+                      self.json_ld += data
+              def handle_endtag(self, tag):
+                  if tag == 'script' and self.json_ld is not None:
+                      self.schemas.append(json.loads(self.json_ld))
+                      self.json_ld = None
           
           parsed_pages = {name: Page(text) for name, text in pages.items()}
           references_checked = 0
@@ -162,13 +211,33 @@ jobs:
                   references_checked += 1
               route_path = '/' + name.removesuffix('index.html')
               assert page.canonical == [ORIGIN + BASE + route_path], (name, page.canonical)
+              assert page.metadata['og:url'] == page.canonical[0]
+              assert page.metadata['twitter:card'] == 'summary_large_image'
+              assert page.metadata['robots'] == 'index, follow, max-image-preview:large'
+              assert len(page.schemas) == 1
+              assert any(node.get('url') == page.canonical[0] and node.get('@type') in {'WebPage', 'CollectionPage', 'ProfilePage'} for node in page.schemas[0]['@graph'])
               assert 'href="/aero"' not in pages[name]
           assert len(parsed_pages) == 10
+          profile = parsed_pages['2/aman-agarwal/index.html']
+          profile_node = next(node for node in profile.schemas[0]['@graph'] if node.get('@type') == 'ProfilePage')
+          assert profile_node['mainEntity']['@type'] == 'Person'
+          assert profile_node['mainEntity']['name'] == 'Aman Agarwal'
+          assert profile_node['mainEntity']['sameAs'] == ['https://github.com/9aman-og']
+          assert profile_node['mainEntity']['url'] == profile.canonical[0]
+          text_references_checked = 0
+          for index in ['2/llms.txt', '2/llms-full.txt']:
+              for value in re.findall(r'https://9aman-og\.github\.io/rexzen/[^\s)]+', (OUTPUT / index).read_text()):
+                  path = OUTPUT / unquote(urlsplit(value).path[len(BASE) + 1:])
+                  if path.is_dir():
+                      path /= 'index.html'
+                  assert path.is_file(), (index, value, 'Missing text index target')
+                  text_references_checked += 1
+              assert 'https://rexzen.si/2/' not in (OUTPUT / index).read_text()
           assert "fetch('/rexzen/character-film-v30.gz')" in (OUTPUT / '2/character-scene.js').read_text()
           assert "'/rexzen/2/projects/'" in (OUTPUT / '2/page-transition.js').read_text()
           assert 'https://rexzen.si/2/' not in (OUTPUT / '2/sitemap.xml').read_text()
           assert not any((OUTPUT / path).exists() for path in ['2/library', '2/research/rex-wm-sensor-noise', '2/research/persistent-model-growth'])
-          report = {'source_commit': SOURCE_COMMIT, 'archive_sha256': EXPECTED, 'route_count': len(parsed_pages), 'references_checked': references_checked, 'canonical_home': home, 'github_commit': os.environ.get('GITHUB_SHA'), 'files': len([path for path in OUTPUT.rglob('*') if path.is_file()])}
+          report = {'source_commit': SOURCE_COMMIT, 'archive_sha256': EXPECTED, 'route_count': len(parsed_pages), 'references_checked': references_checked, 'text_references_checked': text_references_checked, 'structured_data_pages': len(parsed_pages), 'profile_schema_verified': True, 'canonical_home': home, 'github_commit': os.environ.get('GITHUB_SHA'), 'files': len([path for path in OUTPUT.rglob('*') if path.is_file()])}
           (OUTPUT / 'build-info.json').write_text(json.dumps(report, indent=2) + '\n')
           print(json.dumps(report, indent=2))
           PYTHON
