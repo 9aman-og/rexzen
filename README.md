@@ -1,39 +1,30 @@
 # Rexzen
 
-AI software and research.
+AI software and world-model research.
 
-## Current release
+## Websites
 
-Public website: https://rexzen.si
-Aero workspace: https://rexzen.si/aero
-Published release: v18
-Exact source: `43378cfce56f8c3930b4082a664c305bb4ce265c`
-Complete source archive: `rexzen-motion-v18-source.zip`
+- [New second edition](https://9aman-og.github.io/rexzen/2/)
+- [Aman Agarwal's public profile](https://9aman-og.github.io/rexzen/2/aman-agarwal/)
+- [Existing Rexzen website](https://rexzen.si/)
+- [Aero workspace](https://rexzen.si/aero)
 
-## This release
+The second edition is published with GitHub Pages. The existing rexzen.si website remains unchanged. Mounting the new edition at rexzen.si/2/ still requires routing access to its existing host.
 
-Original material films for Rexzen and Aero, with a finite play cycle, Pause, Replay and seeking. The large identity entrance uses staggered letter opacity; a frosted three-pane transition carries public page changes. Initial browser layout stabilization preserves the entrance. Reduced motion, hidden pages, focus, menu actions, offscreen views and meaningful resizing stop active motion.
+## Source and publishing
 
-The directory previews crossfade decoded imagery. 2piarc combines an original material study with a manual interactive form study. The Aero workflow remains fictional and clearly labelled. LinkedIn and Instagram destinations are verified. Public pages have canonical URLs, page-specific share images, structured data and an eight-page sitemap. Search discovery is distinct from indexing.
+[Second-edition release notes](REXZEN-V2.md) describe the source, motion refinements, preservation checks and build process. The matching [source archive](rexzen-v2-source.tar.gz) contains 157 tracked website files from source commit `e857d7a61b64654a7fb05376b6f082498429e736`.
 
-Aero's request review, selected-source boundaries, encrypted per-account provider settings and proposal approval flow are retained from v16. This release does not add model-training claims.
+Archive SHA-256: `2e889a11b0675154cc395eb48eccb06a344f49ee2f4f6395613c273a95d3a6ec`.
+
+[The Pages workflow](.github/workflows/rexzen-pages.yml) verifies the archive, prepares public pages for the repository's URL prefix, checks all ten routes and internal references, and publishes the static edition. The private Aero service continues on its original host.
+
+[The second-edition sitemap](https://9aman-og.github.io/rexzen/2/sitemap.xml) lists the published pages. Search metadata supports discovery; it does not represent a Google creator badge or guarantee indexing.
 
 ## Repository boundary
 
-This private repository contains a sanitized backup. Sonne Systems is maintained separately. Archives exclude credentials, local context, personal workspace records, source PDF manuscripts, local research-run artifacts and private reel previews. Public paper downloads use encrypted envelopes; passwords remain outside source control.
+This public repository contains sanitized source backups and the publishing workflow. Credentials, account records, private context, unencrypted manuscripts, local research-run artifacts and private reel previews are excluded. Public paper downloads remain encrypted envelopes; their passwords stay outside source control. Sonne Systems is maintained separately.
 
-## Source archive
+## Historical backups
 
-Extract `rexzen-motion-v18-source.zip` before building. It contains 94 entries from the exact published source commit. The root HTML/CSS/favicon in this repository are an earlier prototype; current source is inside the ZIP.
-
-SHA-256: `fe2059e2cacecbbde4d443c240b88b67e9803a2710bb1aac4d0e2bc96dc268ca`
-Archive size: 6084261 bytes.
-
-`public/` contains the pages, styles, scripts and original media. `server/` and `worker/` contain the runtime. `drizzle/` contains migrations. `scripts/build.mjs` packages the Worker and versioned assets.
-
-```sh
-pnpm install --frozen-lockfile
-pnpm run build
-```
-
-Live credentials belong in private server secrets scoped to the signed-in account.
+Earlier source ZIPs are retained, including `rexzen-motion-v18-source.zip`, `rexzen-aero-v16-source.zip`, `rexzen-aero-v15-source.zip`, `rexzen-aero-v13-source.zip`, and `rexzen-source-v10.zip`. The root `index.html`, `styles.css`, and `favicon.svg` are an earlier prototype. GitHub Pages builds the second edition from the checked source archive rather than publishing that prototype.
