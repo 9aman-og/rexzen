@@ -39,13 +39,14 @@ jobs:
           import hashlib, json, os, re, shutil, subprocess, tarfile
           
           ARCHIVE = Path(os.environ.get('REXZEN_SOURCE_ARCHIVE', 'rexzen-v2-source.tar.gz'))
-          OUTPUT = Path(os.environ.get('REXZEN_PAGES_OUT', '_site'))
+          OUTPUT = Path(os.environ.get('REXZEN_PAGES_OUT', '_root_site'))
           EXPECTED = '2e889a11b0675154cc395eb48eccb06a344f49ee2f4f6395613c273a95d3a6ec'
-          ORIGIN = 'https://9aman-og.github.io'
-          BASE = '/rexzen'
+          ORIGIN = 'https://rexzen.si'
+          BASE = ''
+          BACKEND = 'https://rexzen.elven-wood-4902.chatgpt.site'
           SOURCE_COMMIT = 'e857d7a61b64654a7fb05376b6f082498429e736'
           NAMES = ['', 'projects', 'focus', 'rex-wm', '2piarc', 'eos', 'research', 'about', 'privacy', 'aman-agarwal']
-          ROUTES = {'/2/' + name: '2/' + (name + '/' if name else '') + 'index.html' for name in NAMES}
+          ROUTES = {'/2/' + name: (name + '/' if name else '') + 'index.html' for name in NAMES}
           SHARED = ('brand/', 'images/', 'media/', 'paper-files/', 'releases/')
           SHARED_FILES = {'character-film-v30.gz', 'character-study-v30.json', 'research-papers.js', 'research-papers.css', 'research-catalog.json'}
           
@@ -98,29 +99,47 @@ jobs:
           )
           files.update({name: body.encode() for name, body in json.loads(generated.stdout).items()})
           
+          def destination_for(name):
+              if name.startswith('2/'):
+                  local = name[2:]
+                  if local.endswith('.html'):
+                      route = '/2/' if local == 'index.html' else '/2/' + PurePosixPath(local).stem
+                      return ROUTES[route]
+                  if local.endswith(('.md', '.xml', '.txt')):
+                      return local
+                  return 'assets/site/' + local
+              return name
+          
+          DESTINATIONS = {name: destination_for(name) for name in files}
+          assert len(set(DESTINATIONS.values())) == len(DESTINATIONS), 'Output collision'
+          
           def mapped(value):
               parsed = urlsplit(value)
               absolute = bool(parsed.netloc)
               if absolute and parsed.netloc != 'rexzen.si':
                   return value
               path = parsed.path
+              if path == '/aero' or path.startswith(('/aero/', '/api/', '/auth/')):
+                  return BACKEND + urlunsplit(('', '', path, parsed.query, parsed.fragment))
               canonical_route = path.rstrip('/')
               if canonical_route == '/2/index.html':
                   canonical_route = '/2'
               if canonical_route.endswith('.html') and canonical_route[:-5] in ROUTES:
                   canonical_route = canonical_route[:-5]
               route_key = '/2/' if canonical_route == '/2' else canonical_route
+              if route_key == '':
+                  route_key = '/2/'
+              elif not route_key.startswith('/2/') and route_key.lstrip('/') in NAMES:
+                  route_key = '/2/' + route_key.lstrip('/')
               if route_key in ROUTES:
-                  path = BASE + route_key.rstrip('/') + '/'
+                  path = '/' + ROUTES[route_key].removesuffix('index.html')
               elif path.lstrip('/') in files:
-                  path = BASE + path
+                  path = '/' + DESTINATIONS[path.lstrip('/')]
               elif path == '/robots.txt':
                   path = BASE + path
-              elif not absolute and (path == '/aero' or path.startswith(('/aero/', '/api/'))):
-                  return urlunsplit(('https', 'rexzen.si', path, parsed.query, parsed.fragment))
               else:
                   return value
-              return urlunsplit(('https' if absolute else '', '9aman-og.github.io' if absolute else '', path, parsed.query, parsed.fragment))
+              return urlunsplit(('https' if absolute else '', 'rexzen.si' if absolute else '', path, parsed.query, parsed.fragment))
           
           URLS = re.compile(r'''(?P<before>[\"'`(\s=>])(?P<url>https://rexzen\.si/[^\s\"'`<>)]*|/(?!/)[^\s\"'`<>)]*)''')
           def rewrite(text):
@@ -132,11 +151,7 @@ jobs:
           OUTPUT.mkdir(parents=True)
           pages = {}
           for name, content in files.items():
-              destination = name
-              if name.startswith('2/') and name.endswith('.html'):
-                  route = '/2/' if name == '2/index.html' else '/2/' + PurePosixPath(name).stem
-                  assert route in ROUTES, name
-                  destination = ROUTES[route]
+              destination = DESTINATIONS[name]
               editable = name.startswith('2/') and '/vendor/' not in name or name in {'research-papers.js', 'research-papers.css', 'research-catalog.json'}
               if editable and Path(name).suffix in {'.html', '.css', '.js', '.json', '.xml', '.txt', '.svg', '.md'}:
                   content = rewrite(content.decode()).encode()
@@ -146,13 +161,22 @@ jobs:
               if destination.endswith('.html'):
                   pages[destination] = content.decode()
           
-          home = ORIGIN + BASE + '/2/'
-          (OUTPUT / 'index.html').write_text('<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Rexzen</title><link rel="canonical" href="' + home + '"><meta http-equiv="refresh" content="0;url=' + BASE + '/2/"><p><a href="' + BASE + '/2/">Open Rexzen</a></p></html>')
-          (OUTPUT / '404.html').write_text('<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Page not found | Rexzen</title><link rel="stylesheet" href="' + BASE + '/2/interface.css"><main class="wrap section"><h1>Page not found.</h1><p>This address does not have a page.</p><a href="' + BASE + '/2/">Return to Rexzen</a></main></html>')
+          home = ORIGIN + '/'
+          (OUTPUT / '404.html').write_text('<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Page not found | Rexzen</title><link rel="stylesheet" href="/assets/site/interface.css"><main class="wrap section"><h1>Page not found.</h1><p>This address does not have a page.</p><a href="/">Return to Rexzen</a></main></html>')
           (OUTPUT / '.nojekyll').touch()
-          (OUTPUT / 'robots.txt').write_text('User-agent: *\nAllow: /\nSitemap: ' + ORIGIN + BASE + '/2/sitemap.xml\n')
-          shutil.copyfile(OUTPUT / '2/sitemap.xml', OUTPUT / 'sitemap.xml')
-          shutil.copyfile(OUTPUT / '2/llms.txt', OUTPUT / 'llms.txt')
+          (OUTPUT / 'robots.txt').write_text('User-agent: *\nAllow: /\nSitemap: ' + ORIGIN + '/sitemap.xml\n')
+          
+          def redirect_page(path, target):
+              file = OUTPUT / path
+              file.parent.mkdir(parents=True, exist_ok=True)
+              file.write_text('<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Rexzen</title><link rel="canonical" href="' + target + '"><meta http-equiv="refresh" content="0;url=' + target + '"><p><a href="' + target + '">Continue to Rexzen</a></p></html>')
+          
+          for name in NAMES:
+              redirect_page('2/' + (name + '/' if name else '') + 'index.html', ORIGIN + '/' + (name + '/' if name else ''))
+          for name in ['aero', 'aero/work', 'aero/context', 'aero/graph', 'aero/ask', 'aero/journal', 'aero/personal', 'aero/settings']:
+              redirect_page(name + '/index.html', BACKEND + '/' + name)
+          for old in ['frontiers', 'principles']:
+              redirect_page(old + '/index.html', ORIGIN + '/about/')
           for verification in Path('.').glob('google*.html'):
               if re.fullmatch(r'google[a-f0-9]+\.html', verification.name):
                   content = verification.read_text().strip()
@@ -195,7 +219,7 @@ jobs:
           for name, page in parsed_pages.items():
               for value in page.references:
                   url = urlsplit(value)
-                  if url.netloc and url.netloc != '9aman-og.github.io':
+                  if url.netloc and url.netloc != 'rexzen.si':
                       continue
                   if not url.path.startswith(BASE + '/'):
                       assert not url.path.startswith('/'), (name, value, 'Unmapped root path')
@@ -218,25 +242,25 @@ jobs:
               assert any(node.get('url') == page.canonical[0] and node.get('@type') in {'WebPage', 'CollectionPage', 'ProfilePage'} for node in page.schemas[0]['@graph'])
               assert 'href="/aero"' not in pages[name]
           assert len(parsed_pages) == 10
-          profile = parsed_pages['2/aman-agarwal/index.html']
+          profile = parsed_pages['aman-agarwal/index.html']
           profile_node = next(node for node in profile.schemas[0]['@graph'] if node.get('@type') == 'ProfilePage')
           assert profile_node['mainEntity']['@type'] == 'Person'
           assert profile_node['mainEntity']['name'] == 'Aman Agarwal'
           assert profile_node['mainEntity']['sameAs'] == ['https://github.com/9aman-og']
           assert profile_node['mainEntity']['url'] == profile.canonical[0]
           text_references_checked = 0
-          for index in ['2/llms.txt', '2/llms-full.txt']:
-              for value in re.findall(r'https://9aman-og\.github\.io/rexzen/[^\s)]+', (OUTPUT / index).read_text()):
+          for index in ['llms.txt', 'llms-full.txt']:
+              for value in re.findall(r'https://rexzen\.si/[^\s)]+', (OUTPUT / index).read_text()):
                   path = OUTPUT / unquote(urlsplit(value).path[len(BASE) + 1:])
                   if path.is_dir():
                       path /= 'index.html'
                   assert path.is_file(), (index, value, 'Missing text index target')
                   text_references_checked += 1
               assert 'https://rexzen.si/2/' not in (OUTPUT / index).read_text()
-          assert "fetch('/rexzen/character-film-v30.gz')" in (OUTPUT / '2/character-scene.js').read_text()
-          assert "'/rexzen/2/projects/'" in (OUTPUT / '2/page-transition.js').read_text()
-          assert 'https://rexzen.si/2/' not in (OUTPUT / '2/sitemap.xml').read_text()
-          assert not any((OUTPUT / path).exists() for path in ['2/library', '2/research/rex-wm-sensor-noise', '2/research/persistent-model-growth'])
+          assert "fetch('/character-film-v30.gz')" in (OUTPUT / 'assets/site/character-scene.js').read_text()
+          assert "'/projects/'" in (OUTPUT / 'assets/site/page-transition.js').read_text()
+          assert 'https://rexzen.si/2/' not in (OUTPUT / 'sitemap.xml').read_text()
+          assert not any((OUTPUT / path).exists() for path in ['library', 'research/rex-wm-sensor-noise', 'research/persistent-model-growth'])
           report = {'source_commit': SOURCE_COMMIT, 'archive_sha256': EXPECTED, 'route_count': len(parsed_pages), 'references_checked': references_checked, 'text_references_checked': text_references_checked, 'structured_data_pages': len(parsed_pages), 'profile_schema_verified': True, 'canonical_home': home, 'github_commit': os.environ.get('GITHUB_SHA'), 'files': len([path for path in OUTPUT.rglob('*') if path.is_file()])}
           (OUTPUT / 'build-info.json').write_text(json.dumps(report, indent=2) + '\n')
           print(json.dumps(report, indent=2))
@@ -244,7 +268,7 @@ jobs:
       - name: Upload public website
         uses: actions/upload-pages-artifact@v4
         with:
-          path: _site
+          path: _root_site
       - name: Publish website
         id: deployment
         uses: actions/deploy-pages@v4
