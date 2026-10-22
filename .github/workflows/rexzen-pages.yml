@@ -173,10 +173,13 @@ jobs:
           
           for name in NAMES:
               redirect_page('2/' + (name + '/' if name else '') + 'index.html', ORIGIN + '/' + (name + '/' if name else ''))
+              if name:
+                  redirect_page(name + '.html', ORIGIN + '/' + name + '/')
           for name in ['aero', 'aero/work', 'aero/context', 'aero/graph', 'aero/ask', 'aero/journal', 'aero/personal', 'aero/settings']:
               redirect_page(name + '/index.html', BACKEND + '/' + name)
           for old in ['frontiers', 'principles']:
               redirect_page(old + '/index.html', ORIGIN + '/about/')
+              redirect_page(old + '.html', ORIGIN + '/about/')
           for verification in Path('.').glob('google*.html'):
               if re.fullmatch(r'google[a-f0-9]+\.html', verification.name):
                   content = verification.read_text().strip()
