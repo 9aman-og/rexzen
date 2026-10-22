@@ -1,8 +1,12 @@
-# Rexzen second edition: prepared source backup
+# Rexzen second edition
 
-Prepared on 22 October 2026 for https://rexzen.si/2/.
+Published on GitHub Pages on 22 October 2026.
 
-**Status: built and reviewed locally; not yet published.** This GitHub backup does not deploy the website. The existing production site and its hosting identity are preserved. Publication requires access to the existing hosting project.
+- [Website](https://9aman-og.github.io/rexzen/2/)
+- [Aman Agarwal profile](https://9aman-og.github.io/rexzen/2/aman-agarwal/)
+- [Sitemap](https://9aman-og.github.io/rexzen/2/sitemap.xml)
+
+**Status: live on GitHub Pages.** The existing rexzen.si production site and its hosting identity are preserved. Mounting this edition at rexzen.si/2/ still requires routing access to the existing host.
 
 ## Source integrity
 
@@ -23,18 +27,20 @@ pnpm install --frozen-lockfile
 pnpm run build
 ```
 
-## What is prepared
+## What is published
 
-The new edition has ten routes under `/2/`: the home page, projects, Aero overview, Rex, 2piarc, EOS, research, about, privacy, and Aman Agarwal's public profile. Internal links and canonical URLs remain in that namespace, and `/2/sitemap.xml` lists those routes. The private Aero application continues at `/aero`.
+The new edition has ten routes under `/2/`: the home page, projects, Aero overview, Rex, 2piarc, EOS, research, about, privacy, and Aman Agarwal's public profile. The archived source targets the `/2/` namespace on rexzen.si. The Pages workflow rebases public links, canonical URLs, media paths and transition routes to `/rexzen/2/` on 9aman-og.github.io and emits directory index pages. The private Aero application continues at https://rexzen.si/aero.
 
 Text reveals wait for page transitions and restore ordinary text after playing. Selected brand words use a shuffled opacity reveal. The original dark footer wordmark is restored with a blinking blue ring. Visible ambient videos loop without playback overlays; offscreen, background, and reduced-motion behavior limit unnecessary work. Three background films use about 46% fewer bytes. Character rendering groups glyphs in one pass with a bounded cache. Phone hero heights and the recorded video panel are corrected.
 
 All ten page openings were reviewed at 320px and 1440px, with targeted 390px transition, footer, video, menu motion preference, and profile search checks. Functional checks cover routing, retired resources, caching, video ranges, metadata, links, and preservation. The preserved baseline has 113 identical original asset objects and nine unchanged protected server files; the root router only gains a separate `/2` dispatch.
 
-The profile and sitemap are prepared for search discovery. The new sitemap has not been submitted to Google because these URLs are not yet live. This source backup does not represent Google verification, a creator profile, or guaranteed indexing.
+The public profile includes ProfilePage and Person metadata, and the sitemap lists the ten published routes. Search indexing follows Google’s own schedule. This release does not represent a Google creator badge or guaranteed search placement.
 
-## Publication boundary
+## Publishing and preservation
 
-Use the original `.openai/hosting.json` project ID and production audience. Push this exact source through the Sites workflow before saving and deploying its matching build. Do not replace the production root, create another hosting project, or repoint the domain as part of this backup. GitHub Pages is not enabled for this repository.
+GitHub Pages is enabled with [the publishing workflow](.github/workflows/rexzen-pages.yml). It checks the source archive checksum, exports public content, verifies routes and internal references, and publishes the result. Source updates require updating the archive and its expected checksum together. Public Google ownership verification files in the repository root are copied into the site when present.
+
+The original `.openai/hosting.json` project ID, audience and bindings remain in the archive. No deployment, domain change or DNS change was made to the existing rexzen.si host. The private Aero service remains there. A future publication at rexzen.si/2/ must retain that original hosting identity and use its normal source synchronization and deployment workflow.
 
 The repository root HTML, CSS, and earlier ZIP archives are historical backups; this document identifies the prepared second edition separately.
