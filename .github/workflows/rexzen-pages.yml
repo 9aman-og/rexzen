@@ -41,6 +41,7 @@ jobs:
           ARCHIVE = Path(os.environ.get('REXZEN_SOURCE_ARCHIVE', 'rexzen-v2-source.tar.gz'))
           OUTPUT = Path(os.environ.get('REXZEN_PAGES_OUT', '_root_site'))
           RELEASES = {
+              '939cf306a5b62376f3ddfa231bb55ef9474c05d70e92a0c7b8b4889e0fa8dc59': '46fb29052818ff763ce896068f391e7e4a87b4c8',
               '2e889a11b0675154cc395eb48eccb06a344f49ee2f4f6395613c273a95d3a6ec': 'e857d7a61b64654a7fb05376b6f082498429e736',
               '341e2157dc74332b645cd20a6fbd50b66a2fc50420e73c495c9bcefc65d21c59': '306a26e366213070e4f4b9071d13c97fcbfd6aa7',
           }
