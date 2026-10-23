@@ -10,11 +10,11 @@ The public website is published at rexzen.si through GitHub Pages, with HTTPS. E
 
 ## Current website source
 
-The [source archive](rexzen-v2-source.tar.gz) contains 170 tracked files from source commit `46fb29052818ff763ce896068f391e7e4a87b4c8`.
+The [source archive](rexzen-v2-source.tar.gz) contains 174 tracked files from source commit `7305177ad42a3cc868ffbff2a1c5b387eb26449e`.
 
-Archive SHA-256: `939cf306a5b62376f3ddfa231bb55ef9474c05d70e92a0c7b8b4889e0fa8dc59`.
+Archive SHA-256: `83a1dabef4cb2b6c2ae77eb4793534f1147e150479b324973856be0f14b10d06`.
 
-The [Pages workflow](.github/workflows/rexzen-pages.yml) accepts only pinned reviewed archive hashes, runs the metadata and public-text generators, checks ten public routes and publishes the static site. [Media and motion update notes](REXZEN-MEDIA.md) describe the original films, imagery, clearer copy and responsive fixes. [Earlier root-publication notes](REXZEN-V2.md) are retained as history.
+The [Pages workflow](.github/workflows/rexzen-pages.yml) accepts only pinned reviewed archive hashes, runs the metadata and public-text generators, checks ten public routes and publishes the static site. [Media and motion update notes](REXZEN-MEDIA.md) describe the real camera-shot media, Aero interface walkthrough, clearer copy and responsive layouts. [Earlier root-publication notes](REXZEN-V2.md) are retained as history.
 
 The [sitemap](https://rexzen.si/sitemap.xml) lists the ten canonical pages. Search metadata supports discovery; it does not represent a Google creator badge or guarantee indexing or ranking.
 

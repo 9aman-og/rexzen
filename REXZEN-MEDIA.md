@@ -1,31 +1,34 @@
-# Rexzen media and motion update — 23 October 2026
+# Rexzen real media and Aero — 23 October 2026
 
 Production destination: https://rexzen.si/
 
-## What changes
+The website now uses camera-shot coastal and notebook footage, real notebook photography, and an Aero walkthrough built from the application's interface components. The earlier graphite, paper-lens and glass renders have been removed from the public assets.
 
-- Original graphite-and-cobalt ambient film for the homepage, and a glass-and-light film for EOS. Both were generated from original keyframes with Wan 2.2, then encoded as muted H.264 loops with separate portrait variants and WebP fallback posters.
-- Three original editorial images generated with the built-in OpenAI image tool: a graphite wave surface, layered paper with a cobalt-edged lens, and smoky glass planes. They are conceptual artwork, separate from research evidence. Prompts, seeds, tool identities, file hashes and encoding details are in MEDIA_PRODUCTION_20261023.json inside the source archive.
-- Selected project names and key statements use bounded shuffled-opacity reveals. Ordinary HTML is restored after each reveal. Page wipes, media masks and the existing scroll motion are retained.
-- Original small pixel icons for notes, prediction, memory and experiments. They contain no game textures or third-party game assets.
-- Clearer project introductions and simpler explanations of the research. Exact manuscript titles and factual scope are preserved.
-- Visible photo/video credits and the public media-credit page are removed at the user's request; source/license records remain in the archive.
-- Profile card-stack width corrected at tablet sizes. Keyboard Escape handling made explicit for navigation and search.
+## Visuals and placement
 
-## Playback follow-up
+- Homepage: real waves meeting a rocky coast, with separate desktop and portrait edits. The desktop film is about 1.48 MB and the portrait film about 0.75 MB.
+- Aero: a rebuilt page led by a native interface walkthrough. It shows choosing sources, reviewing a request and inspecting a proposed plan. Separate portrait captures keep the UI readable on phones. Fictional offline notes and a predefined illustrated response are labelled as an example; no account data or live provider request was used.
+- Aero context section and homepage feature: real handwritten-note footage, edited from a coherent writing gesture. The physical footage is not reversed or motion-synthesized.
+- Supporting spreads: real notebook photography in natural daylight.
+- EOS: real filmed water ripples, with desktop and portrait crops.
+- The original 2πarc character, Rex experiment recordings, pixel icons, footer wordmark and text/page motion remain in place.
 
-The actual Rex recording now uses the same visibility-based loading as other page films. Its source is assigned only when the recording enters the viewport, rather than downloading the desktop recording during the page opening. Automatic muted looping, portrait selection, posters and the original media files are preserved.
+The films are muted H.264 loops with faststart. Visibility-based loading and playback, reduced motion and offscreen pausing remain active. No visible video play/pause or media-credit UI has been added.
 
-## Verification
+## Provenance and boundaries
 
-The static root export checks ten canonical pages, 768 HTML asset/link references, 115 public-text references and all ten structured-data graphs, including the Aman Agarwal ProfilePage. New media plays in desktop and portrait layouts. All ten page openings were rendered at widths 320, 390 and 768; the profile overflow found at 768 was corrected and rechecked. Menus, search filtering, native Escape, reduced motion and the footer animation were sampled in the browser.
+Source pages, creators, Pexels license, original and web asset hashes, film properties and the Aero capture description are recorded in MEDIA_REAL_20261023.json inside the source archive. The filmed scenes are editorial material and do not depict Rexzen staff, facilities or experimental results. Earlier media-generation records remain as history.
 
-The original 2πarc character animation and the actual Rex-WM simulation recordings remain byte-identical to the preceding published release. The private Aero backend, database, domain records and Google ownership file are preserved.
+The private Aero application, account data, API service and database are preserved. The UI styles used for the film match the current live Aero CSS; the capture harness only uses fictional offline records.
+
+## Validation
+
+The reviewed root export checks ten canonical pages, 776 HTML asset/link references, 112 public-text references and all ten structured-data graphs. The Aero page was rendered at widths 320, 390, 768 and 1680. Homepage, EOS, motion preferences and workflow navigation were also reviewed in the browser. Public ownership and search metadata remain in the release workflow.
 
 ## Source identity
 
-Source commit: `46fb29052818ff763ce896068f391e7e4a87b4c8`
+Source commit: `7305177ad42a3cc868ffbff2a1c5b387eb26449e`
 
-Source archive SHA-256: `939cf306a5b62376f3ddfa231bb55ef9474c05d70e92a0c7b8b4889e0fa8dc59`
+Source archive SHA-256: `83a1dabef4cb2b6c2ae77eb4793534f1147e150479b324973856be0f14b10d06`
 
-Files in source archive: 170
+Files in source archive: 174
