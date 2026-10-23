@@ -10,9 +10,9 @@ The public website is published at rexzen.si through GitHub Pages, with HTTPS. E
 
 ## Current website source
 
-The [source archive](rexzen-v2-source.tar.gz) contains 170 tracked files from source commit `306a26e366213070e4f4b9071d13c97fcbfd6aa7`.
+The [source archive](rexzen-v2-source.tar.gz) contains 170 tracked files from source commit `46fb29052818ff763ce896068f391e7e4a87b4c8`.
 
-Archive SHA-256: `341e2157dc74332b645cd20a6fbd50b66a2fc50420e73c495c9bcefc65d21c59`.
+Archive SHA-256: `939cf306a5b62376f3ddfa231bb55ef9474c05d70e92a0c7b8b4889e0fa8dc59`.
 
 The [Pages workflow](.github/workflows/rexzen-pages.yml) accepts only pinned reviewed archive hashes, runs the metadata and public-text generators, checks ten public routes and publishes the static site. [Media and motion update notes](REXZEN-MEDIA.md) describe the original films, imagery, clearer copy and responsive fixes. [Earlier root-publication notes](REXZEN-V2.md) are retained as history.
 
