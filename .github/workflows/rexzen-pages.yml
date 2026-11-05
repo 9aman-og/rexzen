@@ -7,6 +7,12 @@ on:
       - rexzen-v2-source.tar.gz
       - .github/workflows/rexzen-pages.yml
       - google*.html
+      - aero-apps-source.zip.b64
+      - apps/**
+      - backend/**
+      - scripts/**
+      - tests/**
+      - package.json
   workflow_dispatch:
 
 permissions:
@@ -274,6 +280,32 @@ jobs:
           (OUTPUT / 'build-info.json').write_text(json.dumps(report, indent=2) + '\n')
           print(json.dumps(report, indent=2))
           PYTHON
+      - name: Verify and extract connected app source
+        shell: bash
+        run: |
+          python3 - <<'PYTHON'
+          from pathlib import Path, PurePosixPath
+          import base64, hashlib, io, stat, zipfile
+          archive = base64.b64decode(b''.join(Path('aero-apps-source.zip.b64').read_bytes().split()), validate=True)
+          assert hashlib.sha256(archive).hexdigest() == '606810148e162ed169c833f53e6ef179e088ae771d491c9cd4b5d51000411b0f', 'App source checksum mismatch'
+          with zipfile.ZipFile(io.BytesIO(archive)) as source:
+              assert len(source.infolist()) < 100
+              for entry in source.infolist():
+                  path = PurePosixPath(entry.filename)
+                  assert not path.is_absolute() and '..' not in path.parts
+                  assert path.parts[0] in {'apps', 'backend', 'scripts', 'tests'} or entry.filename in {'package.json', 'AEROBOOK.md', '.gitignore'}
+                  assert not stat.S_ISLNK(entry.external_attr >> 16)
+                  assert entry.file_size < 1000000
+                  destination = Path(entry.filename)
+                  destination.parent.mkdir(parents=True, exist_ok=True)
+                  destination.write_bytes(source.read(entry))
+          PYTHON
+      - name: Check Aero and build connected apps
+        run: |
+          node --test tests/*.test.mjs
+          node --check apps/aero/aero.js
+          node --check apps/aerobook/aerobook.js
+          python3 scripts/build-apps.py
       - name: Upload public website
         uses: actions/upload-pages-artifact@v4
         with:
