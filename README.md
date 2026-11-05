@@ -4,9 +4,10 @@ AI tools for your notes and ideas. Research into how models learn from change.
 
 - [Website](https://rexzen.si/)
 - [Aman Agarwal](https://rexzen.si/aman-agarwal/)
-- [Aero private workspace](https://rexzen.elven-wood-4902.chatgpt.site/aero)
+- [Aero private workspace](https://rexzen.si/aero/)
+- [Aerobook notebook](https://rexzen.si/aerobook/)
 
-The public website is published at rexzen.si through GitHub Pages, with HTTPS. Earlier /2/ page addresses redirect to the root pages. Aero continues on its original service and database.
+The public website is published at rexzen.si through GitHub Pages, with HTTPS. Earlier /2/ page addresses redirect to the root pages. Aerobook and the connected Aero workspace now run on the same domain. Google sign-in and a separate authenticated Supabase backend support saved work. The previous Aero service remains available through Settings for explicit data export/import. See [the app documentation](AEROBOOK.md).
 
 ## Current website source
 
@@ -15,6 +16,8 @@ The [source archive](rexzen-v2-source.tar.gz) contains 174 tracked files from so
 Archive SHA-256: `83a1dabef4cb2b6c2ae77eb4793534f1147e150479b324973856be0f14b10d06`.
 
 The [Pages workflow](.github/workflows/rexzen-pages.yml) accepts only pinned reviewed archive hashes, runs the metadata and public-text generators, checks ten public routes and publishes the static site. [Media and motion update notes](REXZEN-MEDIA.md) describe the real camera-shot media, Aero interface walkthrough, clearer copy and responsive layouts. [Earlier root-publication notes](REXZEN-V2.md) are retained as history.
+
+The [connected app source](aero-apps-source.zip.b64) adds Aerobook, Aero, the separately deployed backend and app tests. Its checksum is pinned in the Pages workflow. See [AEROBOOK.md](AEROBOOK.md) for development, storage and deployment details.
 
 The [sitemap](https://rexzen.si/sitemap.xml) lists the ten canonical pages. Search metadata supports discovery; it does not represent a Google creator badge or guarantee indexing or ranking.
 
