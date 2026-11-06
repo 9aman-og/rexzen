@@ -287,7 +287,7 @@ jobs:
           from pathlib import Path, PurePosixPath
           import base64, hashlib, io, stat, zipfile
           archive = base64.b64decode(b''.join(Path('aero-apps-source.zip.b64').read_bytes().split()), validate=True)
-          assert hashlib.sha256(archive).hexdigest() == '90e64d61c09e88ba3cd82470dcaed80ee83769796959c9192e73d6ac632d1b77', 'App source checksum mismatch'
+          assert hashlib.sha256(archive).hexdigest() == 'ac93031dc3460b4247aec28ccc1d3ecefda7c7c4e91e081416b1b9bf6c969a45', 'App source checksum mismatch'
           with zipfile.ZipFile(io.BytesIO(archive)) as source:
               assert len(source.infolist()) < 180
               for entry in source.infolist():
@@ -295,7 +295,7 @@ jobs:
                   assert not path.is_absolute() and '..' not in path.parts
                   assert path.parts[0] in {'apps', 'backend', 'scripts', 'tests', 'android', 'training', 'LICENSES'} or entry.filename in {'package.json', 'AEROBOOK.md', 'AERO-ASSISTANT.md', 'THIRD_PARTY.md', '.gitignore'}
                   assert not stat.S_ISLNK(entry.external_attr >> 16)
-                  assert entry.file_size < 1000000
+                  assert entry.file_size < (2500000 if path.as_posix() in {'apps/assistant/vendor/pdf.worker.min.mjs', 'apps/assistant/vendor/pdf.min.mjs'} else 1000000)
                   destination = Path(entry.filename)
                   destination.parent.mkdir(parents=True, exist_ok=True)
                   destination.write_bytes(source.read(entry))
