@@ -332,3 +332,22 @@ jobs:
         uses: actions/deploy-pages@v4
         with:
           artifact_name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Verify published Aero release
+        run: |
+          python3 - <<'PYTHON'
+          import json, os, time, urllib.request, urllib.error
+          expected = os.environ['GITHUB_SHA'][:12]
+          url = 'https://rexzen.si/aero-build-info.json?aero_release=' + expected
+          for attempt in range(12):
+              try:
+                  with urllib.request.urlopen(url, timeout=15) as response:
+                      actual = json.load(response).get('version')
+                  if actual == expected:
+                      print('Verified public Aero release:', expected)
+                      break
+              except (urllib.error.URLError, ValueError):
+                  pass
+              time.sleep(5)
+          else:
+              raise SystemExit('The public Aero version did not match this release.')
+          PYTHON
