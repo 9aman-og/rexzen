@@ -287,7 +287,7 @@ jobs:
           from pathlib import Path, PurePosixPath
           import base64, hashlib, io, stat, zipfile
           archive = base64.b64decode(b''.join(Path('aero-apps-source.zip.b64').read_bytes().split()), validate=True)
-          assert hashlib.sha256(archive).hexdigest() == 'a39f990b7055ea132cb6a77d3c1ad19904264ef16349b4ddb732fdd998001f16', 'App source checksum mismatch'
+          assert hashlib.sha256(archive).hexdigest() == '235acb66e326319c486f91a59e2398650fb5f5263eb0fdddf82a4a3251a711ff', 'App source checksum mismatch'
           with zipfile.ZipFile(io.BytesIO(archive)) as source:
               assert len(source.infolist()) < 180
               for entry in source.infolist():
