@@ -287,13 +287,13 @@ jobs:
           from pathlib import Path, PurePosixPath
           import base64, hashlib, io, stat, zipfile
           archive = base64.b64decode(b''.join(Path('aero-apps-source.zip.b64').read_bytes().split()), validate=True)
-          assert hashlib.sha256(archive).hexdigest() == '9f1c75625239a88d3890ffc062af1e865b50bb004020dabea8474c2889053f98', 'App source checksum mismatch'
+          assert hashlib.sha256(archive).hexdigest() == 'd435cfc54708c08e4ddd473364c0cdc49dfbe8add2090753e682eb509955b042', 'App source checksum mismatch'
           with zipfile.ZipFile(io.BytesIO(archive)) as source:
-              assert len(source.infolist()) < 100
+              assert len(source.infolist()) < 180
               for entry in source.infolist():
                   path = PurePosixPath(entry.filename)
                   assert not path.is_absolute() and '..' not in path.parts
-                  assert path.parts[0] in {'apps', 'backend', 'scripts', 'tests'} or entry.filename in {'package.json', 'AEROBOOK.md', '.gitignore'}
+                  assert path.parts[0] in {'apps', 'backend', 'scripts', 'tests', 'android', 'training', 'LICENSES'} or entry.filename in {'package.json', 'AEROBOOK.md', 'AERO-ASSISTANT.md', 'THIRD_PARTY.md', '.gitignore'}
                   assert not stat.S_ISLNK(entry.external_attr >> 16)
                   assert entry.file_size < 1000000
                   destination = Path(entry.filename)
@@ -305,7 +305,23 @@ jobs:
           node --test tests/*.test.mjs
           node --check apps/aero/aero.js
           node --check apps/aerobook/aerobook.js
+          node --check apps/assistant/assistant.js
           python3 scripts/build-apps.py
+      - name: Set up Java for the Android alarm preview
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.11.1'
+      - name: Check and build Android alarm preview
+        run: |
+          gradle -p android --no-daemon testDebugUnitTest lintDebug assembleDebug
+          mkdir -p _root_site/downloads
+          cp android/app/build/outputs/apk/debug/app-debug.apk _root_site/downloads/aero-alarms-preview.apk
+          sha256sum _root_site/downloads/aero-alarms-preview.apk
       - name: Upload public website
         uses: actions/upload-pages-artifact@v4
         with:
