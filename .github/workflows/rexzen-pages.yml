@@ -8,6 +8,8 @@ on:
       - .github/workflows/rexzen-pages.yml
       - google*.html
       - aero-apps-source.zip.b64
+      - aero-apps-source.*.b64
+      - aero-apps-source.manifest.json
       - apps/**
       - backend/**
       - scripts/**
@@ -285,9 +287,24 @@ jobs:
         run: |
           python3 - <<'PYTHON'
           from pathlib import Path, PurePosixPath
-          import base64, hashlib, io, stat, zipfile
-          archive = base64.b64decode(b''.join(Path('aero-apps-source.zip.b64').read_bytes().split()), validate=True)
-          assert hashlib.sha256(archive).hexdigest() == 'f9140fca9436f2c2ca5dd48a2a556e2ab789d7085450811863162ae5919c67fb', 'App source checksum mismatch'
+          import base64, hashlib, io, stat, zipfile, json, re
+          manifest = json.loads(Path('aero-apps-source.manifest.json').read_text())
+          assert manifest['format'] == 'aero-source-parts' and manifest['version'] == 1
+          assert manifest['encoding'] == 'base64-whitespace-normalized'
+          assert re.fullmatch('[a-f0-9]{64}', manifest['archive_sha256'])
+          assert 1 <= len(manifest['parts']) <= 16
+          encoded = []
+          for index, part in enumerate(manifest['parts'], 1):
+              assert part['file'] == 'aero-apps-source.%s.%03d.b64' % (manifest['archive_sha256'][:12], index)
+              content = Path(part['file']).read_bytes()
+              assert len(content) <= 600000
+              content = b''.join(content.split())
+              assert len(content) == part['bytes']
+              assert hashlib.sha256(content).hexdigest() == part['sha256']
+              encoded.append(content)
+          archive = base64.b64decode(b''.join(b''.join(encoded).split()), validate=True)
+          assert hashlib.sha256(archive).hexdigest() == manifest['archive_sha256']
+          assert hashlib.sha256(archive).hexdigest() == '0713ca1646491546ea9bb027af76295066032593f704aab8f583282f384c4e58', 'App source checksum mismatch'
           with zipfile.ZipFile(io.BytesIO(archive)) as source:
               assert len(source.infolist()) < 180
               for entry in source.infolist():
