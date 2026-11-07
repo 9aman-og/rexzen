@@ -304,7 +304,7 @@ jobs:
               encoded.append(content)
           archive = base64.b64decode(b''.join(b''.join(encoded).split()), validate=True)
           assert hashlib.sha256(archive).hexdigest() == manifest['archive_sha256']
-          assert hashlib.sha256(archive).hexdigest() == '17be014d0a47922a5a93ec735d848349bdd594113b6e9ea500db7beda9ee9c24', 'App source checksum mismatch'
+          assert hashlib.sha256(archive).hexdigest() == '391644f9a6c4a205d89a14cadd6ad4e8da929af40f2346c6a02d62a69da97151', 'App source checksum mismatch'
           with zipfile.ZipFile(io.BytesIO(archive)) as source:
               assert len(source.infolist()) < 180
               for entry in source.infolist():
@@ -339,6 +339,7 @@ jobs:
           mkdir -p _root_site/downloads
           cp android/app/build/outputs/apk/debug/app-debug.apk _root_site/downloads/aero-alarms-preview.apk
           sha256sum _root_site/downloads/aero-alarms-preview.apk
+          python3 scripts/write-download-info.py
       - name: Upload public website
         uses: actions/upload-pages-artifact@v4
         with:
