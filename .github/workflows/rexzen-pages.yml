@@ -337,7 +337,19 @@ jobs:
         env:
           AERO_ANDROID_SIGNING: ${{ secrets.AERO_ANDROID_SIGNING }}
         run: |
-          python3 scripts/build-android-release.py
+          python3 - <<'PYTHON'
+          from pathlib import Path
+          import os, subprocess, re
+          result = subprocess.run(['python3', 'scripts/build-android-release.py'])
+          if result.returncode:
+              sdk = Path(os.environ.get('ANDROID_HOME') or os.environ.get('ANDROID_SDK_ROOT', ''))
+              verifiers = sorted((sdk / 'build-tools').glob('*/apksigner'), key=lambda p: [int(x) for x in re.findall(r'\d+', p.parent.name)])
+              apk = Path('android/app/build/outputs/apk/release/app-release.apk')
+              if verifiers and apk.is_file():
+                  # Certificates and their digests are public; never print signing credentials.
+                  subprocess.run([str(verifiers[-1]), 'verify', '--print-certs', str(apk)], check=False)
+              raise SystemExit(result.returncode)
+          PYTHON
           python3 scripts/write-download-info.py
       - name: Upload public website
         uses: actions/upload-pages-artifact@v4
