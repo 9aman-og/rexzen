@@ -304,7 +304,7 @@ jobs:
               encoded.append(content)
           archive = base64.b64decode(b''.join(b''.join(encoded).split()), validate=True)
           assert hashlib.sha256(archive).hexdigest() == manifest['archive_sha256']
-          assert hashlib.sha256(archive).hexdigest() == '736dd5836e090495bdfdfb3e2488553bac6ca1cfe68b15c4a14145a9d59cf822', 'App source checksum mismatch'
+          assert hashlib.sha256(archive).hexdigest() == 'd66e36a484936a59f95ca1ebcd4e53de0039988fc0c211a8a639e7348c66003b', 'App source checksum mismatch'
           with zipfile.ZipFile(io.BytesIO(archive)) as source:
               assert len(source.infolist()) < 180
               for entry in source.infolist():
@@ -324,7 +324,7 @@ jobs:
           node --check apps/aerobook/aerobook.js
           node --check apps/assistant/assistant.js
           python3 scripts/build-apps.py
-      - name: Set up Java for the Android alarm preview
+      - name: Set up Java for Android Aero
         uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -333,12 +333,11 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.11.1'
-      - name: Check and build Android alarm preview
+      - name: Check, sign and build Android Aero
+        env:
+          AERO_ANDROID_SIGNING: ${{ secrets.AERO_ANDROID_SIGNING }}
         run: |
-          gradle -p android --no-daemon testDebugUnitTest lintDebug assembleDebug
-          mkdir -p _root_site/downloads
-          cp android/app/build/outputs/apk/debug/app-debug.apk _root_site/downloads/aero-alarms-preview.apk
-          sha256sum _root_site/downloads/aero-alarms-preview.apk
+          python3 scripts/build-android-release.py
           python3 scripts/write-download-info.py
       - name: Upload public website
         uses: actions/upload-pages-artifact@v4
