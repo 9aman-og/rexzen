@@ -2,42 +2,52 @@
   "format": "aero-source-parts",
   "version": 1,
   "encoding": "base64-whitespace-normalized",
-  "archive_sha256": "736dd5836e090495bdfdfb3e2488553bac6ca1cfe68b15c4a14145a9d59cf822",
+  "archive_sha256": "d66e36a484936a59f95ca1ebcd4e53de0039988fc0c211a8a639e7348c66003b",
   "parts": [
     {
-      "file": "aero-apps-source.736dd5836e09.001.b64",
+      "file": "aero-apps-source.d66e36a48493.001.b64",
       "bytes": 444156,
-      "sha256": "014e66d15d448eefd0368273158d4fe3acc27067b18e7b5b7ee7382e36854d37"
+      "sha256": "ace38355cdddd0aff6b2921f3ff8000448db2a40fe0fa8aa7a46a0be7448dc03"
     },
     {
-      "file": "aero-apps-source.736dd5836e09.002.b64",
+      "file": "aero-apps-source.d66e36a48493.002.b64",
       "bytes": 444156,
-      "sha256": "305303caf7741b12860b3f4f927f502dff854b827e5259d4b8872a0dc8085c23"
+      "sha256": "df834424345683dbcbe71f690f6ddd77276e7b90d744c02687e03db293d7cf44"
     },
     {
-      "file": "aero-apps-source.736dd5836e09.003.b64",
+      "file": "aero-apps-source.d66e36a48493.003.b64",
       "bytes": 444156,
-      "sha256": "c8eb7e907d7d475a9574da913304f0873b23589efe2c2f052993802c41ccedc7"
+      "sha256": "538089f645a17de8a95db85b1568fbf4e1a11eefdb9ccc2642bb32441ba0e9cf"
     },
     {
-      "file": "aero-apps-source.736dd5836e09.004.b64",
+      "file": "aero-apps-source.d66e36a48493.004.b64",
       "bytes": 444156,
-      "sha256": "483c47daa907044aaac9ccce3c43a807e5da78d7805d34b63aa5f31d55adade3"
+      "sha256": "66e37c99850ef6986d209231dbf05f89aac605fa1b9462ef52985ef261380056"
     },
     {
-      "file": "aero-apps-source.736dd5836e09.005.b64",
+      "file": "aero-apps-source.d66e36a48493.005.b64",
       "bytes": 444156,
-      "sha256": "560d79029ef8dd1b6d5e9e6f862a3756ca3d3bb94bb5c99e19bbe53b37c5ec05"
+      "sha256": "cdb198e49acc0bdf2770918c76e860e2ab887d49861455b03532f251745ad423"
     },
     {
-      "file": "aero-apps-source.736dd5836e09.006.b64",
+      "file": "aero-apps-source.d66e36a48493.006.b64",
       "bytes": 444156,
-      "sha256": "47bd55907b0154d42b2f6b63b972165ec36131c6aa556f9bc135b790a0c7e3e3"
+      "sha256": "cb0fbd90e612d5966e471282067e5dc36d25013ac04cfe6fafdc8796c4235d29"
     },
     {
-      "file": "aero-apps-source.736dd5836e09.007.b64",
-      "bytes": 427612,
-      "sha256": "0ddc965c4b5caeb412fd9ae3d08cad452b50798620e67e88000216c2ab77fa7d"
+      "file": "aero-apps-source.d66e36a48493.007.b64",
+      "bytes": 444155,
+      "sha256": "df13e95b90cb17f24d320eff363478bd23fe695f4cfebacb57c35b5803a8dbef"
+    },
+    {
+      "file": "aero-apps-source.d66e36a48493.008.b64",
+      "bytes": 444156,
+      "sha256": "56e1186f02ab3721684ea70cb8ea8c7c6ec28269eea4d75b2d2f61958db596b0"
+    },
+    {
+      "file": "aero-apps-source.d66e36a48493.009.b64",
+      "bytes": 419897,
+      "sha256": "dcd469b3e859f8067146bb66542a9b74489061d7e9b4c9688a06347cfc035597"
     }
   ]
 }
