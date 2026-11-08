@@ -351,11 +351,23 @@ jobs:
               raise SystemExit(result.returncode)
           PYTHON
           python3 scripts/write-download-info.py
+          python3 - <<'PYTHON'
+          from pathlib import Path
+          import json
+          root = Path('_root_site')
+          hidden = {p.relative_to(root).as_posix() for p in root.rglob('*') if p.is_file() and any(part.startswith('.') for part in p.relative_to(root).parts)}
+          assert hidden == {'.nojekyll', '.well-known/assetlinks.json'}, 'Unexpected hidden public output'
+          association = json.loads((root / '.well-known/assetlinks.json').read_text())
+          signing = json.loads((root / 'downloads/aero-signing.json').read_text())
+          expected = association[0]['target']['sha256_cert_fingerprints'][0].replace(':', '').lower()
+          assert signing['certificate_sha256'] == expected and signing['signature_verified']
+          PYTHON
       - name: Upload public website
         uses: actions/upload-pages-artifact@v4
         with:
           name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
           path: _root_site
+          include-hidden-files: true
       - name: Publish website
         id: deployment
         uses: actions/deploy-pages@v4
@@ -372,7 +384,14 @@ jobs:
                   with urllib.request.urlopen(url, timeout=15) as response:
                       actual = json.load(response).get('version')
                   if actual == expected:
-                      print('Verified public Aero release:', expected)
+                      with urllib.request.urlopen('https://rexzen.si/.well-known/assetlinks.json?aero_release=' + expected, timeout=15) as response:
+                          association = json.load(response)
+                      with urllib.request.urlopen('https://rexzen.si/downloads/aero-signing.json?aero_release=' + expected, timeout=15) as response:
+                          signing = json.load(response)
+                      certificate = association[0]['target']['sha256_cert_fingerprints'][0].replace(':', '').lower()
+                      if certificate != signing.get('certificate_sha256') or not signing.get('signature_verified'):
+                          raise ValueError('Public Android association does not match the verified APK')
+                      print('Verified public Aero release and Android association:', expected)
                       break
               except (urllib.error.URLError, ValueError):
                   pass
