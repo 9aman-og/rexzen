@@ -14,6 +14,7 @@ on:
       - backend/**
       - scripts/**
       - tests/**
+      - firmware/**
       - package.json
   workflow_dispatch:
 
@@ -292,7 +293,7 @@ jobs:
           assert manifest['format'] == 'aero-source-parts' and manifest['version'] == 1
           assert manifest['encoding'] == 'base64-whitespace-normalized'
           assert re.fullmatch('[a-f0-9]{64}', manifest['archive_sha256'])
-          assert 1 <= len(manifest['parts']) <= 16
+          assert 1 <= len(manifest['parts']) <= 20
           encoded = []
           for index, part in enumerate(manifest['parts'], 1):
               assert part['file'] == 'aero-apps-source.%s.%03d.b64' % (manifest['archive_sha256'][:12], index)
@@ -304,13 +305,13 @@ jobs:
               encoded.append(content)
           archive = base64.b64decode(b''.join(b''.join(encoded).split()), validate=True)
           assert hashlib.sha256(archive).hexdigest() == manifest['archive_sha256']
-          assert hashlib.sha256(archive).hexdigest() == '34ddaf62e45f0f5a4889e3b5d12b87de34161477dcbc7d436ddfcbc556afb2d6', 'App source checksum mismatch'
+          assert hashlib.sha256(archive).hexdigest() == 'f43664e4d4babe0248e231bda12d2b96b4732d715279b4e7a1f16413e0c3b6d1', 'App source checksum mismatch'
           with zipfile.ZipFile(io.BytesIO(archive)) as source:
-              assert len(source.infolist()) < 210
+              assert len(source.infolist()) < 240
               for entry in source.infolist():
                   path = PurePosixPath(entry.filename)
                   assert not path.is_absolute() and '..' not in path.parts
-                  assert path.parts[0] in {'apps', 'backend', 'scripts', 'tests', 'android', 'training', 'LICENSES'} or entry.filename in {'package.json', 'AEROBOOK.md', 'AERO-ASSISTANT.md', 'THIRD_PARTY.md', '.gitignore'}
+                  assert path.parts[0] in {'apps', 'backend', 'scripts', 'tests', 'android', 'training', 'firmware', 'LICENSES'} or entry.filename in {'package.json', 'AEROBOOK.md', 'AERO-ASSISTANT.md', 'THIRD_PARTY.md', '.gitignore'}
                   assert not stat.S_ISLNK(entry.external_attr >> 16)
                   assert entry.file_size < (2500000 if path.as_posix() in {'apps/assistant/vendor/pdf.worker.min.mjs', 'apps/assistant/vendor/pdf.min.mjs'} else 1000000)
                   destination = Path(entry.filename)
