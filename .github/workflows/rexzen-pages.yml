@@ -315,7 +315,7 @@ jobs:
               encoded.append(content)
           archive = base64.b64decode(b''.join(b''.join(encoded).split()), validate=True)
           assert hashlib.sha256(archive).hexdigest() == manifest['archive_sha256']
-          assert hashlib.sha256(archive).hexdigest() == 'a6f0badb47cf2d72fd21c652b07d0944fecdce1b6e6b754ba9620b25a94fc85f', 'App source checksum mismatch'
+          assert hashlib.sha256(archive).hexdigest() == '08b922b0449e043e0b8878319a7094f872ccd39457cdb85af47d5185d5f80eb1', 'App source checksum mismatch'
           with zipfile.ZipFile(io.BytesIO(archive)) as source:
               assert len(source.infolist()) < 240
               for entry in source.infolist():
