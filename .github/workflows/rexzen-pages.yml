@@ -16,20 +16,30 @@ on:
       - tests/**
       - firmware/**
       - package.json
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/rexzen-pages.yml
+      - aero-apps-source.manifest.json
+      - aero-apps-source.*.b64
+      - android/**
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: rexzen-pages
+  group: ${{ github.event_name == 'pull_request' && format('rexzen-review-{0}', github.event.pull_request.number) || 'rexzen-pages' }}
   cancel-in-progress: true
 
 jobs:
   publish:
-    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -285,7 +295,7 @@ jobs:
           PYTHON
       - name: Verify and extract connected app source
         shell: bash
-        run: |
+        run: &extract_aero_source |
           python3 - <<'PYTHON'
           from pathlib import Path, PurePosixPath
           import base64, hashlib, io, stat, zipfile, json, re
@@ -305,7 +315,7 @@ jobs:
               encoded.append(content)
           archive = base64.b64decode(b''.join(b''.join(encoded).split()), validate=True)
           assert hashlib.sha256(archive).hexdigest() == manifest['archive_sha256']
-          assert hashlib.sha256(archive).hexdigest() == 'd8e85969a9e0ca187164a38d0c0f76c485a8d19d0c7816b029ac248f7500df01', 'App source checksum mismatch'
+          assert hashlib.sha256(archive).hexdigest() == 'a6f0badb47cf2d72fd21c652b07d0944fecdce1b6e6b754ba9620b25a94fc85f', 'App source checksum mismatch'
           with zipfile.ZipFile(io.BytesIO(archive)) as source:
               assert len(source.infolist()) < 240
               for entry in source.infolist():
@@ -351,6 +361,7 @@ jobs:
                   subprocess.run([str(verifiers[-1]), 'verify', '--print-certs', str(apk)], check=False)
               raise SystemExit(result.returncode)
           PYTHON
+          python3 scripts/check-android-apk.py android/app/build/outputs/apk/release/app-release.apk
           python3 scripts/write-download-info.py
           python3 - <<'PYTHON'
           from pathlib import Path
@@ -400,3 +411,35 @@ jobs:
           else:
               raise SystemExit('The public Aero release and Android association did not pass verification.')
           PYTHON
+
+
+  review:
+    name: Check Aero before publication
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Verify and extract connected app source
+        shell: bash
+        run: *extract_aero_source
+      - name: Check website and app behavior
+        run: |
+          node --test tests/*.test.mjs
+          python3 tests/build-public-base.py
+          python3 scripts/build-apps.py
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.11.1'
+      - name: Build and check Android without the release key
+        run: |
+          gradle -p android --no-daemon testDebugUnitTest lintDebug assembleDebug
+          python3 scripts/check-android-apk.py android/app/build/outputs/apk/debug/app-debug.apk
