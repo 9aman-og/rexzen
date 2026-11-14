@@ -315,7 +315,7 @@ jobs:
               encoded.append(content)
           archive = base64.b64decode(b''.join(b''.join(encoded).split()), validate=True)
           assert hashlib.sha256(archive).hexdigest() == manifest['archive_sha256']
-          assert hashlib.sha256(archive).hexdigest() == '9726de80e1574c91d68cdf4e558ecb13425ad795798b6be64f678af0e133228c', 'App source checksum mismatch'
+          assert hashlib.sha256(archive).hexdigest() == '2056788b9f913893767a57dac0e3c1af2f2cfbc10a7af0b514af20042addbdd7', 'App source checksum mismatch'
           with zipfile.ZipFile(io.BytesIO(archive)) as source:
               assert len(source.infolist()) < 330
               large_files = {'apps/assistant/vendor/pdf.worker.min.mjs':2500000, 'apps/assistant/vendor/pdf.min.mjs':2500000,
