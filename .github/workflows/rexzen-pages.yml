@@ -303,7 +303,7 @@ jobs:
           assert manifest['format'] == 'aero-source-parts' and manifest['version'] == 1
           assert manifest['encoding'] == 'base64-whitespace-normalized'
           assert re.fullmatch('[a-f0-9]{64}', manifest['archive_sha256'])
-          assert 1 <= len(manifest['parts']) <= 20
+          assert 1 <= len(manifest['parts']) <= 32
           encoded = []
           for index, part in enumerate(manifest['parts'], 1):
               assert part['file'] == 'aero-apps-source.%s.%03d.b64' % (manifest['archive_sha256'][:12], index)
@@ -315,11 +315,15 @@ jobs:
               encoded.append(content)
           archive = base64.b64decode(b''.join(b''.join(encoded).split()), validate=True)
           assert hashlib.sha256(archive).hexdigest() == manifest['archive_sha256']
-          assert hashlib.sha256(archive).hexdigest() == '340c7cd67ef168237cb48d992a366ddd95e312336330adc0ea10e8b1535f8a8a', 'App source checksum mismatch'
+          assert hashlib.sha256(archive).hexdigest() == '9726de80e1574c91d68cdf4e558ecb13425ad795798b6be64f678af0e133228c', 'App source checksum mismatch'
           with zipfile.ZipFile(io.BytesIO(archive)) as source:
-              assert len(source.infolist()) < 270
+              assert len(source.infolist()) < 330
               large_files = {'apps/assistant/vendor/pdf.worker.min.mjs':2500000, 'apps/assistant/vendor/pdf.min.mjs':2500000,
-                             'apps/assistant/vendor/wllama/wllama.wasm':3000000}
+                             'apps/assistant/vendor/wllama/wllama.wasm':3000000,
+                             'apps/rexzen/assets/site/devices/aero-locket-screen.glb':1250000,
+                             'apps/rexzen/assets/site/devices/aero-locket-screen-fit-kit.zip':1750000,
+                             'apps/rexzen/assets/site/devices/aero-glasses-r01-fit-kit.zip':1750000,
+                             'apps/rexzen/assets/site/devices/aero-glasses-r01.glb':1250000}
               for entry in source.infolist():
                   path = PurePosixPath(entry.filename)
                   assert not path.is_absolute() and '..' not in path.parts
