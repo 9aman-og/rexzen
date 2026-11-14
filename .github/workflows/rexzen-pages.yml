@@ -315,15 +315,17 @@ jobs:
               encoded.append(content)
           archive = base64.b64decode(b''.join(b''.join(encoded).split()), validate=True)
           assert hashlib.sha256(archive).hexdigest() == manifest['archive_sha256']
-          assert hashlib.sha256(archive).hexdigest() == '0cabf60000e6bb32618a039a3fe82551fc03ee7500944f64bbfceb041dbbae3e', 'App source checksum mismatch'
+          assert hashlib.sha256(archive).hexdigest() == '340c7cd67ef168237cb48d992a366ddd95e312336330adc0ea10e8b1535f8a8a', 'App source checksum mismatch'
           with zipfile.ZipFile(io.BytesIO(archive)) as source:
-              assert len(source.infolist()) < 240
+              assert len(source.infolist()) < 270
+              large_files = {'apps/assistant/vendor/pdf.worker.min.mjs':2500000, 'apps/assistant/vendor/pdf.min.mjs':2500000,
+                             'apps/assistant/vendor/wllama/wllama.wasm':3000000}
               for entry in source.infolist():
                   path = PurePosixPath(entry.filename)
                   assert not path.is_absolute() and '..' not in path.parts
                   assert path.parts[0] in {'apps', 'backend', 'scripts', 'tests', 'android', 'training', 'firmware', 'LICENSES'} or entry.filename in {'package.json', 'AEROBOOK.md', 'AERO-ASSISTANT.md', 'THIRD_PARTY.md', '.gitignore'}
                   assert not stat.S_ISLNK(entry.external_attr >> 16)
-                  assert entry.file_size < (2500000 if path.as_posix() in {'apps/assistant/vendor/pdf.worker.min.mjs', 'apps/assistant/vendor/pdf.min.mjs'} else 1000000)
+                  assert entry.file_size < large_files.get(path.as_posix(), 1000000)
                   destination = Path(entry.filename)
                   destination.parent.mkdir(parents=True, exist_ok=True)
                   destination.write_bytes(source.read(entry))
