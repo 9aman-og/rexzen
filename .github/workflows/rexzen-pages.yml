@@ -315,9 +315,9 @@ jobs:
               encoded.append(content)
           archive = base64.b64decode(b''.join(b''.join(encoded).split()), validate=True)
           assert hashlib.sha256(archive).hexdigest() == manifest['archive_sha256']
-          assert hashlib.sha256(archive).hexdigest() == '2056788b9f913893767a57dac0e3c1af2f2cfbc10a7af0b514af20042addbdd7', 'App source checksum mismatch'
+          assert hashlib.sha256(archive).hexdigest() == '15f3cba7a0c237d494bf413b3afe5b1e70eec2ace84d7d0f5e3ff7d4c8d2a584', 'App source checksum mismatch'
           with zipfile.ZipFile(io.BytesIO(archive)) as source:
-              assert len(source.infolist()) < 330
+              assert len(source.infolist()) < 370
               large_files = {'apps/assistant/vendor/pdf.worker.min.mjs':2500000, 'apps/assistant/vendor/pdf.min.mjs':2500000,
                              'apps/assistant/vendor/wllama/wllama.wasm':3000000,
                              'apps/rexzen/assets/site/devices/aero-locket-screen.glb':1250000,
@@ -337,7 +337,7 @@ jobs:
       - name: Check Aero and build connected apps
         run: |
           node --test tests/*.test.mjs
-          python3 -m unittest discover -s tests -p test_aero_local.py
+          python3 -m unittest discover -s tests -p 'test_aero_*.py'
           node --check apps/aero/aero.js
           node --check apps/assistant/notebook-backups.js
           node --check apps/assistant/assistant.js
@@ -437,7 +437,7 @@ jobs:
       - name: Check website and app behavior
         run: |
           node --test tests/*.test.mjs
-          python3 -m unittest discover -s tests -p test_aero_local.py
+          python3 -m unittest discover -s tests -p 'test_aero_*.py'
           python3 tests/build-public-base.py
           python3 scripts/build-apps.py
       - uses: actions/setup-java@v4
