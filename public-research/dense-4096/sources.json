@@ -1,0 +1,206 @@
+[
+  {
+    "id": 1,
+    "url": "https://www.nature.com/articles/s44172-026-00611-w",
+    "title": "Increasing EEG electrode density improves decoding of visual categories and source localization (2026)",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "trode density facilitates more accurate single-trial classification of visual stimuli, achieving an average accuracy of 73% using uHD EEG and regularized linear discriminant analysis",
+        "added": "2026-11-24"
+      },
+      {
+        "text": "Using a uHD EEG system with 512 electrodes focused over the occipital region, we recorded brain responses to four visual categories: faces, bodies, objects, and patterns",
+        "added": "2026-11-24"
+      },
+      {
+        "text": "A sample data set is available at the online repository for this project: https://osf",
+        "added": "2026-11-24"
+      },
+      {
+        "text": "To ensure optimal contact between the uHD EEG grids and the scalp, participants’ heads were shaved and cleaned with medical alcohol before the experiment.",
+        "added": "2026-11-24"
+      },
+      {
+        "text": "Four healthy male participants (S1, S2, S3, and S4) with an average age of 35 years (SD = 10 years) participated in the experiments without prior training.",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "url": "https://www.nature.com/articles/s41597-023-02260-6",
+    "title": "High-density scalp EEG during sensorimotor rhythm-based BCI (2023)",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "The EEG setup employed in all studies was a 128-channel high-density EEG cap, making it possible to assess the neurophysiological properties outside the common BCI target region, which",
+        "added": "2026-11-24"
+      },
+      {
+        "text": "Data RecordsAll datasets were deposited to the OpenNeuro data repository in the EEG-BIDS format45 as a separate project46,47,48,49",
+        "added": "2026-11-24"
+      },
+      {
+        "text": "(a) Electrode locations used for online BCI operation",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "url": "https://www.nature.com/articles/s41467-024-50783-2",
+    "title": "4096-channel event-based multielectrode array (2024)",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "We introduce a self-clocked microelectrode array (MEA) that digitizes bio-signals at the pixel level by encoding changes as asynchronous digital address-events only when they exceed a threshold, significantly reducing off-chip data transmission",
+        "added": "2026-11-24"
+      },
+      {
+        "text": "Microelectrode arrays cultured with in vitro neural networks for motion control tasks: encoding and decoding progress and advances",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "url": "https://www.ti.com/product/ADS1299",
+    "title": "Texas Instruments ADS1299 product specifications",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "Input-Referred Noise: 1 µVPP (70-Hz BW)",
+        "added": "2026-11-24"
+      },
+      {
+        "text": "Up to Eight Low-Noise PGAs and Eight High-Resolution Simultaneous-Sampling ADCs",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "url": "https://www.nature.com/articles/s41593-026-02303-2",
+    "title": "Brain2Qwerty: noninvasive decoding of typed sentences (2026)",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "With magnetoencephalography, Brain2Qwerty reaches, on average, a character error rate of 29% and substantially outperforms electroencephalography (character error rate: 65%).",
+        "added": "2026-11-24"
+      },
+      {
+        "text": "p learning architecture trained to decode sentences from either electro- or magnetoencephalography, while participants typed briefly memorized sentences on a QWERTY keyboard.",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "url": "https://rexzen.si/research/bci",
+    "title": "Rexzen Neural R0 research release",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "We reanalysed 720 cued left-versus-right motor imagery trials from 16 people.",
+        "added": "2026-11-24"
+      },
+      {
+        "text": "16-channel daily configuration and 32-channel lab configuration",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "url": "https://www.nature.com/articles/s41598-024-57167-y",
+    "title": "Mapping the central sulcus using non-invasive ultra-high-density brain recordings (2024)",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "This uHD EEG records from 256 channels with an inter-electrode distance of 8",
+        "added": "2026-11-24"
+      },
+      {
+        "text": "This uHD EEG records from 256 channels with an inter-electrode distance of 8.6 mm and an electrode diameter of 5.9 mm.",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "url": "https://www.nature.com/articles/s44385-025-00009-x",
+    "title": "Stick-and-play bioadhesive hairlike electrodes (2025)",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "Here, we report stick-and-play hairlike device that can attach to the human scalp without the need for skin preparation, using a highly flexible and stretchable electrode material and robust bioadhesive material",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "url": "https://www.nature.com/articles/s44385-025-00061-7",
+    "title": "Review of bioelectric signal electrode systems (2025)",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "Dry contact electrodes contact the skin without electrolytes, leading to substantially higher electrode-skin impedances (tens to hundreds of kΩ at 1 Hz to 10 kHz50,52) than wet electrodes",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A10.1186%2Fs12938-020-00830-y&format=json&resultType=core&pageSize=1",
+    "title": "Head phantoms for bioelectromagnetic applications (2020)",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "To establish a realistically shaped physical head phantom with a well-defined volume conduction configuration, we here characterize the electrical conductivity of synthetic materials for modeling head compartm",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "url": "https://www.ti.com/lit/ds/symlink/ads1299.pdf",
+    "title": "TI ADS1299 Rev C data sheet",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "Normal mode 39 42 mW",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "url": "https://api.osf.io/v2/nodes/rv5gz/files/osfstorage/673f102fcd3aaf451f886637/?view_only=e89e1d5477b04f5a9cfba6783148aa78",
+    "title": "Schreiner et al.: OSF published sample metadata, VisualStim S03",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "\"name\": \"VisualStim_S03.mat\", \"kind\": \"file\", \"path\": \"/674f194ccc09d497e4e75006\",",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "url": "https://web.archive.org/web/20261115063424/https://www.gtec.at/product/pangolin-ultra-high-density-eeg-emg-ecg-electrode-grids",
+    "title": "g.tec g.Pangolin research system, archived 15 November 2026 (manufacturer claim)",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "can record up to 1,024 synchronized EEG channels",
+        "added": "2026-11-24"
+      },
+      {
+        "text": "Pangolin, up to 1,024 Channels",
+        "added": "2026-11-24"
+      }
+    ]
+  }
+]

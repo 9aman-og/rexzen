@@ -1,0 +1,164 @@
+{
+  "version": "D4096/0.2",
+  "scope": "Modeled surrogate floorplan and synthetic transport loopback only; no hardware, human or signal data.",
+  "numpy": "2.5.4",
+  "budgets": {
+    "channels": 4096,
+    "tile_count": 64,
+    "lane_count": 64,
+    "sectors": 8,
+    "rate_sps": 250,
+    "word_bits": 24,
+    "payload_megabits_s": 24.576,
+    "raw_8h_decimal_gb": 88.4736,
+    "packet_overhead_wire_megabits_s": 24.896,
+    "packet_wire_8h_decimal_gb": 89.6256,
+    "each_sector_on_wire_megabits_s": 3.112,
+    "optional_500sps_wire_megabits_s": 49.792,
+    "skin_temp_kelvin_assumed": 310,
+    "noise_bandwidth_hz": 44.5,
+    "noise_model": [
+      {
+        "ohm_per_side": 100000,
+        "johnson_uvrms_pair": 0.39034398117557806,
+        "plus_1uv_electronics_rss_uvrms": 1.073484244709721
+      },
+      {
+        "ohm_per_side": 300000,
+        "johnson_uvrms_pair": 0.6760956078248105,
+        "plus_1uv_electronics_rss_uvrms": 1.2071061556134985
+      },
+      {
+        "ohm_per_side": 1000000,
+        "johnson_uvrms_pair": 1.2343760514527167,
+        "plus_1uv_electronics_rss_uvrms": 1.5886107882045872
+      }
+    ],
+    "phase_error_at_90hz_degrees_for_10us": 0.324,
+    "links_and_logic_budget_w": 0.21,
+    "cap_power_goal_w": 0.45,
+    "afe_budget_at_50uW_each_w": 0.2048,
+    "cap_nominal_w": 0.4148,
+    "pocket_nominal_w": 0.55,
+    "battery_design_ceiling_w": 1.25,
+    "usable_wh_after_margins": 12.0,
+    "modeled_hours_at_design_ceiling": 9.6,
+    "triangular_pitch_3p5_area_cm2": 434.5369066028799,
+    "target_sphere_radius_mm": 96.0,
+    "projected_contact_pitch_guess_mm": 3.5
+  },
+  "geometry": {
+    "480": {
+      "unrelaxed": {
+        "nearest": {
+          "min_mm": 2.986068508251521,
+          "p05_mm": 3.2374830287230574,
+          "median_mm": 3.300920851547558
+        },
+        "across_tile_nearest": {
+          "min_mm": 2.986068508251521,
+          "p05_mm": 3.251466367153818,
+          "median_mm": 5.379669791060445
+        },
+        "max_tile_projection_spans_mm": [
+          45.28727788949571,
+          42.98218274112719
+        ]
+      },
+      "optimized": {
+        "nearest": {
+          "min_mm": 3.2401536931568375,
+          "p05_mm": 3.2401537043680966,
+          "median_mm": 3.300799023348658
+        },
+        "across_tile_nearest": {
+          "min_mm": 3.2401536931652597,
+          "p05_mm": 3.2501976620015713,
+          "median_mm": 5.379669791060445
+        },
+        "max_tile_projection_spans_mm": [
+          45.28727788949571,
+          42.98218274112719
+        ]
+      }
+    },
+    "520": {
+      "unrelaxed": {
+        "nearest": {
+          "min_mm": 3.108007549502458,
+          "p05_mm": 3.369686909689281,
+          "median_mm": 3.429288188307192
+        },
+        "across_tile_nearest": {
+          "min_mm": 3.108007549502458,
+          "p05_mm": 3.381394617002864,
+          "median_mm": 5.6091152758714315
+        },
+        "max_tile_projection_spans_mm": [
+          47.136493295468824,
+          44.73727419752224
+        ]
+      },
+      "optimized": {
+        "nearest": {
+          "min_mm": 3.2401537423276423,
+          "p05_mm": 3.369686909689281,
+          "median_mm": 3.429288188307192
+        },
+        "across_tile_nearest": {
+          "min_mm": 3.2401537423276423,
+          "p05_mm": 3.381394617002864,
+          "median_mm": 5.609115275871593
+        },
+        "max_tile_projection_spans_mm": [
+          47.13649329546881,
+          44.73727419752224
+        ]
+      }
+    },
+    "560": {
+      "unrelaxed": {
+        "nearest": {
+          "min_mm": 3.2253411043492104,
+          "p05_mm": 3.4968983868478265,
+          "median_mm": 3.551884079881745
+        },
+        "across_tile_nearest": {
+          "min_mm": 3.2253411043492104,
+          "p05_mm": 3.507363672374467,
+          "median_mm": 5.847465603140387
+        },
+        "max_tile_projection_spans_mm": [
+          48.91585082309355,
+          46.42606349947113
+        ]
+      },
+      "optimized": {
+        "nearest": {
+          "min_mm": 3.2401537263452074,
+          "p05_mm": 3.4968983868478265,
+          "median_mm": 3.551884079881745
+        },
+        "across_tile_nearest": {
+          "min_mm": 3.2401537263452074,
+          "p05_mm": 3.507363672374467,
+          "median_mm": 5.847465603140387
+        },
+        "max_tile_projection_spans_mm": [
+          48.915850823093535,
+          46.42606349947114
+        ]
+      }
+    }
+  },
+  "loopback": {
+    "synthetic_duration_s": 240.0,
+    "frames": 7500,
+    "signed_values": 245760000,
+    "packet_count": 480000,
+    "wire_bytes": 746880000,
+    "rejected_or_lost_clean_packets": 0,
+    "wire_sha256": "ee393bfc6f4e2edc25c57c606ad90cd59d2822fe9ca61d6c7d84344eb60e5645",
+    "host_processing_s": 23.494
+  }
+}

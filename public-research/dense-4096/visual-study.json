@@ -1,0 +1,122 @@
+{
+  "scope": "Real author-published EEG: one participant, one session, exploratory four-class visual task only. No Rexzen recordings or 4096-channel inference.",
+  "file": "VisualStim_S03.mat",
+  "sha256": "3a8f7f748174d070f0d181722fa6db929b49cd4fae5485c280b1fb2ca727791d",
+  "numpy": "1.26.4",
+  "scipy": "1.17.1",
+  "sampling_rate": 512,
+  "recorded_eeg_channels": 512,
+  "tested_trials": 80,
+  "unique_image_names": 67,
+  "class_counts": {
+    "face": 22,
+    "body": 22,
+    "tool": 23,
+    "pattern": 13
+  },
+  "fold_sizes": [
+    {
+      "train": 55,
+      "test": 20,
+      "image_name_overlap": 0
+    },
+    {
+      "train": 54,
+      "test": 20,
+      "image_name_overlap": 0
+    },
+    {
+      "train": 54,
+      "test": 20,
+      "image_name_overlap": 0
+    },
+    {
+      "train": 53,
+      "test": 20,
+      "image_name_overlap": 0
+    }
+  ],
+  "split": "4 consecutive held-out time blocks; exclude all held-out image filenames from the training fold; all usable trials scored once.",
+  "windows": "8 per-channel means on 40 ms bins at 80–400 ms for post tests; −400 to −80 ms for pre; from each subtract that trial’s −600 to −430 ms baseline.",
+  "montage": "Nested random recorded-channel subsets for 12 fixed seeds per density; 512 uses every recorded EEG channel. Existing acquisition reference not undone; no new re-reference.",
+  "estimator": "Fixed class-balanced ridge with training-only standardization; pooled class-balanced accuracy; ranges across subsets are not confidence intervals.",
+  "theoretical_chance": 0.25,
+  "results": [
+    {
+      "eeg_channels": 32,
+      "layout_repeats": 12,
+      "post_median": 0.43347141988446336,
+      "post_range": [
+        0.3189799331103679,
+        0.4941851626634235
+      ],
+      "prestim_median": 0.22810884767406508,
+      "prestim_range": [
+        0.18421252660383095,
+        0.2646321070234114
+      ]
+    },
+    {
+      "eeg_channels": 64,
+      "layout_repeats": 12,
+      "post_median": 0.43248327759197325,
+      "post_range": [
+        0.38066281544542413,
+        0.4981757373061721
+      ],
+      "prestim_median": 0.2416577987230161,
+      "prestim_range": [
+        0.18907722712070538,
+        0.26413803587716633
+      ]
+    },
+    {
+      "eeg_channels": 128,
+      "layout_repeats": 12,
+      "post_median": 0.4280556400121618,
+      "post_range": [
+        0.2982289449680754,
+        0.49030860443903923
+      ],
+      "prestim_median": 0.2569550015202189,
+      "prestim_range": [
+        0.20294922468835513,
+        0.2838628762541806
+      ]
+    },
+    {
+      "eeg_channels": 256,
+      "layout_repeats": 12,
+      "post_median": 0.41125722103982976,
+      "post_range": [
+        0.3786485253876558,
+        0.48681210094253574
+      ],
+      "prestim_median": 0.25720203709334144,
+      "prestim_range": [
+        0.17771359075706902,
+        0.27599574338704774
+      ]
+    },
+    {
+      "eeg_channels": 512,
+      "layout_repeats": 1,
+      "post_median": 0.4226208574034661,
+      "post_range": [
+        0.4226208574034661,
+        0.4226208574034661
+      ],
+      "prestim_median": 0.26162967467315296,
+      "prestim_range": [
+        0.26162967467315296,
+        0.26162967467315296
+      ]
+    }
+  ],
+  "shuffle_512": {
+    "iterations": 32,
+    "mean": 0.25938260109455763,
+    "minimum": 0.1531240498631803,
+    "maximum": 0.3761781696564305
+  }
+}

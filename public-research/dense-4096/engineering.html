@@ -1,0 +1,222 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>D4096 engineering report | Rexzen Research</title><meta name="description" content="Research design, software validation and public EEG reanalysis. No Rexzen hardware performance claimed.">
+<link rel="canonical" href="https://rexzen.si/research/bci/dense-4096/engineering.html"><style>
+:root{--paper:#f1f4eb;--white:#fbfcf7;--ink:#192822;--muted:#3e5449;--line:#c2d0c4;--accent:#215d43;--night:#182d25;font:16px/1.6 'Segoe UI',Arial,sans-serif;color-scheme:light}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink)}a{color:var(--accent);text-underline-offset:4px}a:focus-visible{outline:3px solid currentColor;outline-offset:4px}.shell{width:min(100%,1200px);margin:auto;padding-inline:30px}.banner{border-bottom:1px solid var(--line)}.banner nav{min-height:66px;display:flex;align-items:center;justify-content:space-between;gap:8px}.logo{color:var(--ink);font-weight:760;font-size:1.19rem;letter-spacing:-.05em;text-decoration:none}.label,.note,.eyebrow{font:700 .76rem/1.4 Consolas,monospace;text-transform:uppercase;letter-spacing:.11em;color:var(--accent)}.hero{display:grid;grid-template-columns:.89fr 1.11fr;align-items:center;gap:36px;padding-block:58px 46px}h1,h2{letter-spacing:-.055em;line-height:1.04}.hero h1{font-size:clamp(3rem,8.7vw,7.4rem);margin:.08em 0 .17em}.major{font-size:clamp(1.3rem,2vw,1.9rem);line-height:1.29}.hero p{max-width:43ch}.soft{color:var(--muted)}figure{margin:0}img{display:block;max-width:100%;height:auto}figcaption{font-size:.83rem;line-height:1.45;color:var(--muted);margin-top:6px}.actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:20px}.button{display:inline-flex;min-height:44px;align-items:center;background:var(--accent);color:white;padding:8px 13px;font-weight:700;text-decoration:none}.band{background:var(--night);color:#f2f6ee}.band .shell{display:grid;grid-template-columns:.9fr 1.1fr;gap:46px;padding-block:36px}.band .note,.band a{color:#b4e3bf}.band .soft{color:#cce2d2}.bodypart{padding-block:38px;border-bottom:1px solid var(--line)}.bodypart h2,.band h2{font-size:clamp(2rem,4vw,3rem);margin:.3em 0 .45em}.resources{list-style:none;margin:0;padding:0}.resources li{border-top:1px solid var(--line);display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:9px 0}.resources a{font-weight:680}.resources span{color:var(--muted)}.mini{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.mini p strong{display:block;font-size:1.47rem;color:#edf6eb}.mini p{padding:0;margin:.6em 0}.mini .note{display:inline-block;margin-top:4px}.footer{padding-block:24px}.report{max-width:1020px;background:var(--white);margin:auto;padding:36px 48px 58px}.report h1{font-size:clamp(2.45rem,5.8vw,4.7rem);margin:.34em 0}.report h2{font-size:1.7rem;margin:32px 0 12px;border-top:1px solid var(--line);padding-top:17px;break-after:avoid}.report p,.report li{overflow-wrap:anywhere}.report figure{margin:20px 0}.report figure img{width:min(100%,540px)}.report table{border-collapse:collapse;width:100%;font-size:.87rem;margin:10px 0 18px}.report td,.report th{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top;overflow-wrap:anywhere}.report th{background:#e1ebe0}.report tr,.report figure{break-inside:avoid}.report thead{display:table-header-group}.report code{font:.87em Consolas,monospace}.report .sources{columns:2;gap:24px;font-size:.91rem}.report .sources li{break-inside:avoid}.report .headlink{padding-bottom:8px;border-bottom:1px solid var(--line)}
+@media(max-width:750px){.shell{padding-inline:18px}.hero,.band .shell{grid-template-columns:1fr;gap:18px}.hero{padding-block:34px 30px}.report{padding:22px 16px 35px}.report .sources{columns:1}.report th,.report td{padding:5px}.mini{gap:10px}}@media(max-width:460px){.resources li{grid-template-columns:1fr;gap:0}.mini{grid-template-columns:1fr}.hero figure{width:100%}}
+@page{size:A4;margin:14mm 14mm 16mm}@media print{*{print-color-adjust:exact;-webkit-print-color-adjust:exact}body{font:11.4pt/1.43 Arial,sans-serif;background:white}.report{padding:0;background:white}.report h1{font-size:37pt}.report h2{font-size:19pt}.report figure img{max-height:91mm;object-fit:contain;object-position:left}.report table{font-size:9.8pt}a{text-decoration:none}}
+</style></head><body><main class="report"><nav class="headlink"><a class="label" href="https://rexzen.si/research/bci/dense-4096/">Rexzen Research / D4096</a></nav><h1>D4096 — dense scalp EEG research track</h1>
+<p><strong>Revision 0.2 · November 2026 · Design, simulation, and secondary public-data analysis. No Rexzen 4,096-channel hardware or human measurements. Not ready to manufacture or connect to a human.</strong></p>
+<h2>1. What “4,096” means</h2>
+<p>Build to <strong>4,096 separate, non-penetrating scalp measurement electrodes; 4,096 independently acquired, time-aligned lanes; one native sample per lane per tick</strong>. One primary and one backup reference, a common-mode/body-bias electrode, and optional ocular/muscle/IMU channels are extra and not in the headline count. A switch matrix that sees only a subset at a time, averages of nearby pads, or outputs inferred by a model do not meet the requirement. Simultaneity means aligned sample aperture <strong>and calibrated group delay</strong>, not merely a shared timestamp. Report the three counts separately: physical sites, captured lanes, and quality-valid sites per time window. Require all lanes wired, and at least <strong>4,000 usable</strong> (97.66%) in any window advertised as full-density operation. Two lost tiles are enough to invalidate the dense mode. Smaller modes, if retained for R&amp;D, must be explicitly named and cannot satisfy the 4,000 minimum.</p>
+<p><strong>Decision today:</strong> build the D4096 instrument as a research track alongside the public R0 cap.<sup><a href="#s7">[7]</a></sup> Do not sell the first dense build as daily-wear hardware. It may require a serviced liner, a rear-to-pocket tether and stationary use. A daily version with all 4,096 lanes remains an engineering target, contingent on contact yield, thermal load and a measured task advantage. The topology and transport meet the count in software. Neither has been demonstrated on a human head.</p>
+<h2>2. Evidence and the test of “best”</h2>
+<table>
+<thead>
+<tr>
+<th>Comparator</th>
+<th>What was demonstrated</th>
+<th>Design implication</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Schreiner et al., <em>Scientific Reports</em></td>
+<td>256 channels, 8.6 mm inter-electrode distance in a targeted non-invasive central-sulcus mapping study.<sup><a href="#s8">[8]</a></sup></td>
+<td>Start with the strongest task-matched density, not 16 channels as a straw man.</td>
+</tr>
+<tr>
+<td>Schreiner et al., <em>Communications Engineering</em>, 2026</td>
+<td>512 electrodes over the occipital region, 73% average visual-category accuracy with rLDA under that protocol. Four participants. They prepared and shaved scalps for this experiment.<sup><a href="#s1">[1]</a></sup></td>
+<td>Region, preparation and task are part of the result. Do not copy their preparation in a consumer device or imply a wearable works through ordinary hair.</td>
+</tr>
+<tr>
+<td>g.Pangolin + g.HIamp</td>
+<td>Manufacturer advertised up to 1,024 synchronized channels in an archived product page dated 15 November 2026.<sup><a href="#s15">[15]</a></sup></td>
+<td>A high count on external laboratory amplifiers is already available. Request hands-on access and verify all channels, montage, prep and throughput before a head-to-head claim.</td>
+</tr>
+<tr>
+<td>4,096-channel event-based CMOS array</td>
+<td>4,096 channels in an event-based microelectrode research array, digitizing changes in the pixels.<sup><a href="#s3">[3]</a></sup></td>
+<td>Different electrodes, readout and application; not prior evidence of a dried, unshaved human scalp network or fixed-rate EEG.</td>
+</tr>
+<tr>
+<td>Brain2Qwerty</td>
+<td>MEG 29% versus EEG 65% mean character error when 35 volunteers actually typed; this was a typing experiment, not thought transcription.<sup><a href="#s5">[5]</a></sup></td>
+<td>No scale conversion from electrode count to word rate. No parity or superiority claim against implants.</td>
+</tr>
+</tbody>
+</table>
+<p>Candidate success is <strong>incremental usable information</strong> after accounting for eye/muscle, superficial currents, partial shorts, motion, reference noise, electrical noise and geometry. A larger array can improve spatial sampling without yielding thousands of independent neural observations. Compare fixed-density versions under the same task, clocking, acquisition duration, cohort, reference and validation protocol. Relative performance on cap-only public reanalyses cannot establish SOTA. If the result saturates at 512 in intended use, do not claim benefit from deploying 4,096 in that use. Keep the full-count instrument for mapping only if it establishes a separate advantage.</p>
+<h2>3. What was run</h2>
+<p><strong>Software loopback:</strong> 240 s of programmed samples; 480,000 packets; 245,760,000 signed values; 746,880,000 bytes encoded and reassembled without a clean-frame mismatch. Corruption, duplicate and wrong-time rejection and missing-tile validity checks passed separately. At 250 samples/s the planned payload is <strong>24.576 Mb/s</strong>, <strong>24.896 Mb/s</strong> including our packet wrappers before physical-link overhead (3.112 Mb/s per sector). Eight hours is 88.47 decimal GB raw or 89.63 GB with packet wrappers.</p>
+<p><strong>Real EEG, one prepared lab session:</strong> 80 trials for four visual categories; theoretical chance is 25%. Source: the archived author sample, one participant, not Rexzen D4096.<sup><a href="#s1">[1]</a></sup><sup><a href="#s13">[13]</a></sup></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:right">Selected EEG channels</th>
+<th style="text-align:right">Post-stim balanced accuracy</th>
+<th style="text-align:right">Range across 12 subsets (not CIs)</th>
+<th style="text-align:right">Pre-stim control</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">32</td>
+<td style="text-align:right">43.3%</td>
+<td style="text-align:right">31.9%–49.4%</td>
+<td style="text-align:right">22.8%</td>
+</tr>
+<tr>
+<td style="text-align:right">64</td>
+<td style="text-align:right">43.2%</td>
+<td style="text-align:right">38.1%–49.8%</td>
+<td style="text-align:right">24.2%</td>
+</tr>
+<tr>
+<td style="text-align:right">128</td>
+<td style="text-align:right">42.8%</td>
+<td style="text-align:right">29.8%–49.0%</td>
+<td style="text-align:right">25.7%</td>
+</tr>
+<tr>
+<td style="text-align:right">256</td>
+<td style="text-align:right">41.1%</td>
+<td style="text-align:right">37.9%–48.7%</td>
+<td style="text-align:right">25.7%</td>
+</tr>
+<tr>
+<td style="text-align:right">512</td>
+<td style="text-align:right">42.3%</td>
+<td style="text-align:right">All recorded sites</td>
+<td style="text-align:right">26.2%</td>
+</tr>
+</tbody>
+</table>
+<p>The 512-site shuffled-label mean was <strong>25.9%</strong> (32 negative-control runs). This fixed reanalysis found <strong>no monotonic density advantage</strong>; the 512 result was within the ranges of the smaller subsets. It does not overturn the cohort result from the paper, establish equivalence, or justify extrapolating to 4,096. Different decoder, split and montage selection.</p>
+<p><strong>512-site reanalysis:</strong> exact author-published VisualStim S03 file; SHA-256 matched OSF, no raw EEG redistributed. The MATLAB file has EEG and distinct label/time rows; the latter are used only for trial alignment, not as classifier input.<sup><a href="#s1">[1]</a></sup><sup><a href="#s13">[13]</a></sup> The experiment compares nested random recorded-channel subsets (not alternate physical devices) on one session/participant, with a fixed linear model, time-block holdout and repeated-image filename exclusion. Do not compare its percentages directly to the paper's subject-average or claim it demonstrates cross-day transfer, fit, scalp source localization, mobile use or 4,096-channel efficacy.</p>
+<p><strong>4,096-lane replay:</strong> generated integer fixtures exercise actual software encoding, checksum, reverse tile arrival order, reassembly, signed extremes and checks of every sample. Explicit invalid masks distinguish missing channels from literal zero-valued samples. This is a deterministic in-memory host test. No analog front end, physical cable, cryptographic storage, power or person was tested.</p>
+<h2>4. Geometry and fit</h2>
+<figure><img src="topology.svg" alt="All 4,096 simulated contact centers, colored by sector" /></figure>
+<table>
+<thead>
+<tr>
+<th>Modeled active patch</th>
+<th style="text-align:right">Initial min. center-to-center</th>
+<th style="text-align:right">Relaxed min. center-to-center</th>
+<th style="text-align:right">Relaxed median nearest center</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>480 cm²</td>
+<td style="text-align:right">2.986 mm</td>
+<td style="text-align:right">3.240 mm</td>
+<td style="text-align:right">3.301 mm</td>
+</tr>
+<tr>
+<td>520 cm²</td>
+<td style="text-align:right">3.108 mm</td>
+<td style="text-align:right">3.240 mm</td>
+<td style="text-align:right">3.429 mm</td>
+</tr>
+<tr>
+<td>560 cm²</td>
+<td style="text-align:right">3.225 mm</td>
+<td style="text-align:right">3.240 mm</td>
+<td style="text-align:right">3.552 mm</td>
+</tr>
+</tbody>
+</table>
+<p>The arithmetic baseline is a triangular 3.5 mm lattice occupying about 435 cm² <em>before</em> parts like joins, fluid barriers, facial exclusions and cap edges. A second, explicit all-channel surrogate starts with equal-area Fibonacci sites on a spherical patch (radius 96 mm). A bounded tangent relaxation moves sites by at most 0.45 mm to increase the minimum nearest-center distance. Coordinates, hierarchy and per-lane assignment are in <code>electrode-map.csv</code>; the visualization uses an equal-area projection. Partition projection recursively to eight contiguous-ish sectors of 512 sites, then eight local 64-lane tiles per sector. In this map, tile rotor/routing shape depends on region. An 8×8 lane address is a logical count, not a requirement to force a square grid onto the scalp. <code>address = 512 × sector + 64 × tile_in_sector + lane</code>.</p>
+<p>The sphere is <strong>not</strong> a person or an anatomical fit proof. Initial 560 cm² variant is the reference. The smaller patches demonstrate only mathematical packing, not that a real small head has that usable surface. At D0 acquire unpowered scans/dummies that cover sizes, asymmetry, cap straps and eyewear; carve exclusions around ear, brow and hair transition; create a position/calibration file per liner size and lot. Use measured geodesic distance with actual edge reserve and tolerances, not just total surface area. Freeze one manufacturable sector only after checking trace exits and assign invariant logical IDs. Do not shrink the same outline proportionally if clearance or pressure fail.</p>
+<p><strong>Proposed contact stack:</strong> 1.90 ±0.05 mm inside-diameter contact coupon; individually isolated conductive hydrogel/protected Ag/AgCl candidate on a soft adhesive carrier, hydrophobic dielectric moat and relief path away from neighboring wells. No sharp tips, puncture, capillary wick between wells or shared gel film. Center-placement envelope initially ±0.15 mm each side; budget worst neighboring centers minus largest approved active footprint, both fabrication errors and hydrated spread. Allocate ≥0.9 mm electrical isolation clearance on the surrogate before mechanical/moisture qualification. If the hydrated footprint overruns the budget, prefer smaller localized plugs and package redesign, not pressure. Prototype low-force nonpenetrating compliant bridges only as an alternate cartridge; tiny area may create unacceptable impedance on dry hair.<sup><a href="#s10">[10]</a></sup></p>
+<p><strong>Do not confuse geometric coverage with contact yield.</strong> Separate load-bearing 3D spacer liner from contact membranes. Bind motion strain relief to the frame; float each sensing island against the carrier to avoid shearing skin. Independent wells are checked under sweat, cleaning chemistry, hair shafts and motion. Wet variant is for bench/approved lab study only. Candidate future normal-hair route: wearer-removable hair-parting spacer ribs at tile seams, distributed compliant pressure, or stable hairlike bioadhesive contacts; hairlike scalp electrodes have been described, but that does not show a quick 4,096-point fit.<sup><a href="#s9">[9]</a></sup> Trial don/doff, public wear acceptability, pressure mapping, comfort and support access without requiring shaving, scalp abrasion or painful loading. In early mechanical exploration completely unpowered dummies come first. Avoid claiming photosensitivity-free experimental stimuli or safety because a device is “non-invasive.”</p>
+<p>Worst-case failure planning: a whole 512-site sector dropout is not equivalent to scattered noise. Never spread good-neighbor scores to cover a shorted tile. Track valid contact <strong>by sector and contiguous holes</strong>, contact flags and verified reference state. Example target for early study: ≥4,000 valid sites in ≥90% of pre-specified seated windows for most eligible users, a per-sector minimum, and ≤2 minutes independent donning in a separate mature version. Report confidence bounds by size/hair condition and participants who cannot fit; do not silently exclude them from the headline denominator. Seated and moving criteria are separate.</p>
+<h2>5. Signal chain and precision budget</h2>
+<figure><img src="signal-path.svg" alt="Receive-only topology from scalp contacts to local confirmed actions" /></figure>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Rev target and architecture</th>
+<th>Bench verification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Analog topology</td>
+<td>64 sensing channels per tile. Each electrode has its own high-input-impedance path, protection, gain, sample aperture and address. Keep unbuffered traces short (&lt;15 mm design intent); do not bring thousands of high-Z traces to the belt. Quiet short local return, RF/trunk shield separated from sense routing, deterministic scan and guard policy. Synchronized local AFE with per-lane sample-and-hold and adequate settling or genuinely simultaneous converters.</td>
+<td>Off-body impedance fixtures, switched resistor/capacitor emulator, guarding/ESD leakage over temperature and humidity; verify rail behavior and calibration across all tiles. No electrode common bus that merges channels.</td>
+</tr>
+<tr>
+<td>Measurement quality</td>
+<td>≥1 GΩ magnitude at 10 Hz and ≥200 MΩ at 45 Hz at the integrated input, checked with real harness and ESD; ≤1.0 µV RMS per-lane electronics shorted, and ≤2.0 µV RMS AFE+defined phantom source in 0.5–45 Hz; separate high-band mode for 45–90 Hz with its own noise budget. Avoid quoting 24-bit output as ENOB.</td>
+<td>Measure per-lane noise, DC offsets and drift, input bias/leakage, anti-alias with swept out-of-band tone, 50/60 Hz behavior. Report median, p95 and worst, each with real source impedance. Phase/group delay sweeps 1–90 Hz; external calibrated clocks.</td>
+</tr>
+<tr>
+<td>Precision under interference</td>
+<td>≤0.5% inter-lane gain mismatch after calibration at 10 and 40 Hz; target ≥80 dB installed common-mode rejection at 50/60 Hz with a deliberately imbalanced source; adjacent electronic crosstalk ≤−70 dB at 10/40 Hz under fixture conditions. Skin/gel bridges are a separate phantom test.</td>
+<td>Connect reusable one-hot microvolt fixture; inject one lane and all others terminated, assess lane-to-lane coupling. At 4,096 lanes test every input and worst-case neighbors; verify sensor and converter amplitude/full-scale including large electrode offsets and overload recovery.</td>
+</tr>
+<tr>
+<td>Reference and actuator separation</td>
+<td>Primary reference with local protected buffer and differential distribution; monitor independent backup continuously, do not silently hot-switch reference. Any change requires new acquisition epoch and time marked. One reviewed common-mode/body-bias path only; system-level fault/leakage budget includes every connectable surface and test circuit, not a rating multiplied blindly across channels. Optional independent EOG/EMG for study, never count them as brain sites. No stimulation.</td>
+<td>Phantom reference-open, bias fault, leakage and startup/fault combinations; human-connection design signed off by qualified engineers and testing lab before a human safety study. Diagnostic excitation only if independently approved; do not energize 4,096 lead-off drives in parallel.</td>
+</tr>
+<tr>
+<td>Synchronization</td>
+<td>Common oscillator and frame sync, deterministic reset and gain/phase calibration; aperture <strong>and calibrated group-delay residual ≤10 µs</strong> across the cap as a target. 10 µs ≈0.324 degrees at 90 Hz. One global monotonic sample index plus a hardware epoch, tile identity, a timing fault indicator, and link-loss filters.</td>
+<td>Fan out a known waveform and timing pulse to all tiles on a fixture; sweep frequency, rail, thermal and CPU/RF load. Detect counter slips and phase drift; quiesce stale inference after hot-unplug or map change.</td>
+</tr>
+<tr>
+<td>Power and transport</td>
+<td>Analog target ≤50 µW per channel as an assumed custom/matched AFE budget; total cap power target ≤0.45 W including aggregation. Body module for protected pack, raw storage and compute. Layered rigid-flex sectors; candidate short breakaway digital link, floating sensor island with tested isolation or optical data plus isolated power. No USB, charge or mains on the head.</td>
+<td>Per-sector metering, thermal worst cases with sweat/insulation and radio; chargers physically and electrically interlocked and cannot operate while worn. Cap/cable topology must fail off after single faults. Confirm no snag hazards before on-body studies.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Budget contrast.</strong> ADS1299 is an eight-channel simultaneous-conversion component, useful for a small bench measurement card.<sup><a href="#s4">[4]</a></sup> Its typical normal-mode figure is 39 mW in the datasheet condition (analog supply 5 V, bias amp off).<sup><a href="#s12">[12]</a></sup> Scaling to 512 packages gives ~20 W for converters alone. That rules out a direct wearable scale-up. Prove 32–64 channels off-body first with catalog references; shortlist lower-power AFE modules or commission a shuttle ASIC only after contact quality and incremental utility justify it. A custom front end budget of 0.205 W plus ~0.21 W logic/links yields ~0.415 W for the cap; add ~0.55 W remote compute/storage nominal and qualify the full system at a provisional battery-side 1.25 W ceiling. On a 15 Wh pack with 80% usable energy that implies 9.6 h <em>modeled</em>; no runtime or heat measured. Keep the pack in the pocket, not above the neck. Candidate daily headwear mass ≤180 g before body module retained as a measured usability gate, not a material estimate.</p>
+<p><strong>Noise arithmetic.</strong> <code>sqrt(4 k T (R+R) B)</code> with equal ideal resistor sources at 310 K and 44.5 Hz noise bandwidth gives ~0.39, 0.68 and 1.23 µV RMS for 100 kΩ, 300 kΩ and 1 MΩ per side. Adding 1 µV RMS electronics in quadrature gives ~1.07, 1.21 and 1.59 µV RMS. This is a thermal-noise model, not a real scalp prediction. Polarization, preamp current noise, reference/admittance, non-white skin interface noise and mechanical artifact are not in it. Use measured impedance <strong>and</strong> stability/noise; a low reading may be a gel bridge. Estimate bridge signature on an independent phantom at crossed spacings and hydration; a high correlation alone cannot distinguish bridging from a real common field.</p>
+<h2>6. Data path, model and consent</h2>
+<p><strong>Framing:</strong> fixed 250 samples/s baseline; 500 only on validated links if needed. Interleaved signed little-endian 24-bit; eight samples × 64 lanes per packet; test header contains magic, version, tile ID, first sample index and payload length plus IEEE CRC-32. CRC detects corruption; it is not authentication. Packet stream includes 32 ms blocks, 64 tile packets per block and a separate health sideband. Eight 10 Mb/s-class sectors are candidates, with a ≥100 Mb/s-class trunk (throughput verified including real protocol, line code and bursts). An 8-sample tile packet does not fit under standard Ethernet MTU with transport overhead; if the external link is IP, segment and reassemble explicitly below the negotiated MTU. Local raw recording only, optional and encrypted, with segmented file integrity, signed map/firmware, loss-aware validity and a device-specific key. Packet labels/source IDs are versioned; hold data in a short volatile ring when recording is off. At 250 sps reserve ≥128 GB usable for a full 8-hour raw research session with disk reserve; confirm encryption headroom and decide if 256 GB is needed for 500 sps. Phone summary link is rate-limited and carries fit diagnostics and consented intent, never the full raw 4k stream. No wireless “4k” claim from previews.</p>
+<p><strong>Decoder scale-up:</strong> hierarchical causal graph/temporal net: per-tile temporal kernels over only QA-passing rows → 64 tile tokens and regional summaries → masked graph or small transformer with neighboring tile and geometry edges → per-task calibrated candidate and abstention. Direct global attention over 4,096 raw sites is not the first iteration. Compare spatially local CSD/beamformer features and regularized linear/covariance models under the same montage subsets and data budget. Track verified electrode locations, bridge masks and reference changes. For source-localization benchmarks use individual anatomic models and known phantom ground truth; compare blind source location error with uncertainty and conductivity perturbations. For BCI, test physical real-density data plus dense-subset thinning, random layout replicates, tile-hole stress and cold-start days. Ablate: no high-density channels, no learned mask, and nuisance-only (EOG, EMG, IMU, position, timing) controls. If dependent on leaked neuromuscular cues label it accordingly, not EEG-only.</p>
+<p><strong>Intent and speech:</strong> acquisition is physical-switch controlled. Preserve R0's arm, explicit review, confirmation and expiry. Use app for settings and consent; optional GPT receives approved text only and never raw waveforms, neural embeddings or control authority. Earphones are an independent audio path; do not read content aloud if a private route isn't available. Current software is a data model and analysis, not trained real-time firmware. Long sentences remain a separate research effort. It needs cross-day and unseen prompt-family testing with shuffled, disconnected, cue-only, muscle/microphone-only and language-model-only controls. No unapproved competitive-game control, autonomous motion or safety-critical use.</p>
+<h2>7. Stop gates and manufacturing sequence</h2>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>What must exist</th>
+<th>Pass / hold</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D0 — contacts on fixtures</td>
+<td>Unpowered headforms, 64-contact coupon, dry/semi-dry variants, haptic and wet bridging fixtures, independently reviewed risk/fit plans</td>
+<td>Do not build population-specific tooling if any face exclusion, pocket isolation, skin-material, temperature or tolerancing issue is unresolved. Do not use a human as a continuity tester.</td>
+</tr>
+<tr>
+<td>D1 — 512 on phantom</td>
+<td>8 tiles across at least two routing/fit regions, calibrated timing board, one-hot signal injection, realistic head phantom with ground-truth internal sources; established multi-layer phantoms provide a starting point.<sup><a href="#s11">[11]</a></sup></td>
+<td>Verify electrode mapping, leakage and single-fault shutdown, analog performance and spatial reconstruction comparators. No human acquisition before independent electrical, materials and thermal signoff and ethics approval.</td>
+</tr>
+<tr>
+<td>D2 — full 4,096 build</td>
+<td>64 tiles, verified clock and isolated recording, real 8 h continuous fixture test, digest, sample-loss and corruption telemetry, fault logging and no unsafe heat</td>
+<td>Show all lanes individually and reject failed windows; no hidden fallback. Off-body validation first. Unit engineering targets: no silent sample loss, no dropout hidden by DSP; third-party approval for applicable physical safety requirements.</td>
+</tr>
+<tr>
+<td>D3 — matched human study</td>
+<td>Approved randomized paired study against validated 128/256/512 (and 1,024 if accessible), own 4,096 and held-out whole sessions, include multiple size/hair strata; power calculation fixed before confirmatory analysis</td>
+<td>For a task-level leadership claim, propose ≥5 percentage points on paired accuracy with lower 95% bound &gt;0 at matched false proposals/coverage; confirm held-out days and independent replication. Also compare utility to switch/touch. For spatial claims use blinded phantom mm errors and replication; never infer mm neural resolution from site pitch.</td>
+</tr>
+<tr>
+<td>D4 — ordinary wear</td>
+<td>Separately approved comfort, setup, fit, charge, EMC, cleaning, battery/transport, quality management, repair/validation and human-factors studies</td>
+<td>No marketing as daily, SOTA or for medical use without evidence supporting the corresponding claim. Keep independent heads-up off control, no hidden neural logging. Stop if gain does not cover setup, operating effort or failure rate.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Investor / manufacturing posture:</strong> the defensible innovation is the joint contact fit, synchronized dense channel fabric, and verifiable coverage contract—not the raw number of sensors, clinical uptake, thought reading or an IP claim. Outsource analog safety, human factors, cap molding, and ASIC design review to specialists. Reuse available 256/512 systems and benchmark data, including the existing 128-channel SMR BCI corpus for method checks.<sup><a href="#s2">[2]</a></sup> Spend first on contact and phantom experiments with serial traceability and the matched benchmark; do not commit to volumes or ASIC mask sets before knowing how much the dense system adds. This release provides a modeled instrument and executable checks, not final schematics/Gerbers, certified CAD, or a manufacturing release.</p>
+<h2>Sources</h2><ul class="sources"><li id="s1">[1] <a href="https://www.nature.com/articles/s44172-026-00611-w">Increasing EEG electrode density improves decoding of visual categories and source localization (2026)</a></li><li id="s2">[2] <a href="https://www.nature.com/articles/s41597-023-02260-6">High-density scalp EEG during sensorimotor rhythm-based BCI (2023)</a></li><li id="s3">[3] <a href="https://www.nature.com/articles/s41467-024-50783-2">4096-channel event-based multielectrode array (2024)</a></li><li id="s4">[4] <a href="https://www.ti.com/product/ADS1299">Texas Instruments ADS1299 product specifications</a></li><li id="s5">[5] <a href="https://www.nature.com/articles/s41593-026-02303-2">Brain2Qwerty: noninvasive decoding of typed sentences (2026)</a></li><li id="s7">[7] <a href="https://rexzen.si/research/bci">Rexzen Neural R0 research release</a></li><li id="s8">[8] <a href="https://www.nature.com/articles/s41598-024-57167-y">Mapping the central sulcus using non-invasive ultra-high-density brain recordings (2024)</a></li><li id="s9">[9] <a href="https://www.nature.com/articles/s44385-025-00009-x">Stick-and-play bioadhesive hairlike electrodes (2025)</a></li><li id="s10">[10] <a href="https://www.nature.com/articles/s44385-025-00061-7">Review of bioelectric signal electrode systems (2025)</a></li><li id="s11">[11] <a href="https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A10.1186%2Fs12938-020-00830-y&amp;format=json&amp;resultType=core&amp;pageSize=1">Head phantoms for bioelectromagnetic applications (2020)</a></li><li id="s12">[12] <a href="https://www.ti.com/lit/ds/symlink/ads1299.pdf">TI ADS1299 Rev C data sheet</a></li><li id="s13">[13] <a href="https://api.osf.io/v2/nodes/rv5gz/files/osfstorage/673f102fcd3aaf451f886637/?view_only=e89e1d5477b04f5a9cfba6783148aa78">Schreiner et al.: OSF published sample metadata, VisualStim S03</a></li><li id="s15">[15] <a href="https://web.archive.org/web/20261115063424/https://www.gtec.at/product/pangolin-ultra-high-density-eeg-emg-ecg-electrode-grids">g.tec g.Pangolin research system, archived 15 November 2026 (manufacturer claim)</a></li></ul></main></body></html>

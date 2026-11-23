@@ -17,6 +17,7 @@ on:
       - firmware/**
       - package.json
       - public-research/bci/**
+      - public-research/dense-4096/**
   pull_request:
     branches: [main]
     paths:
@@ -384,6 +385,8 @@ jobs:
           PYTHON
       - name: Include the Rexzen Neural research release
         run: python3 scripts/publish_bci_research.py public-research/bci _root_site
+      - name: Include the D4096 research track
+        run: python3 scripts/publish_dense_research.py public-research/dense-4096 _root_site
       - name: Upload public website
         uses: actions/upload-pages-artifact@5f327015a708106f6f1b7c9a633901af30fe80cb # Supports the explicit hidden-file input
         with:
