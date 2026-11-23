@@ -16,6 +16,7 @@ on:
       - tests/**
       - firmware/**
       - package.json
+      - public-research/bci/**
   pull_request:
     branches: [main]
     paths:
@@ -381,6 +382,8 @@ jobs:
           expected = association[0]['target']['sha256_cert_fingerprints'][0].replace(':', '').lower()
           assert signing['certificate_sha256'] == expected and signing['signature_verified']
           PYTHON
+      - name: Include the Rexzen Neural research release
+        run: python3 scripts/publish_bci_research.py public-research/bci _root_site
       - name: Upload public website
         uses: actions/upload-pages-artifact@5f327015a708106f6f1b7c9a633901af30fe80cb # Supports the explicit hidden-file input
         with:

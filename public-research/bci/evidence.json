@@ -1,0 +1,430 @@
+[
+  {
+    "id": 1,
+    "url": "https://physionet.org/content/eegmmidb/1.0.0",
+    "title": "EEG Motor Movement/Imagery Dataset v1.0.0",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "A set of 64-channel EEGs from subjects who performed a series of motor/imagery tasks has been contributed to PhysioNet by the developers of the BCI2000 instrumentation system for brain-computer interface research.",
+        "added": "2026-11-24"
+      },
+      {
+        "text": "Open Data Commons Attribution License v1.0",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "url": "https://www.ti.com/product/ADS1299",
+    "title": "ADS1299 data sheet, product information and support | TI.com",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "Analog: 4.75 V to 5.25 V",
+        "added": "2026-11-24"
+      },
+      {
+        "text": "Input-Referred Noise: 1 µVPP (70-Hz BW)",
+        "added": "2026-11-24"
+      },
+      {
+        "text": "Data Rate: 250 SPS to 16 kSPS",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "url": "https://wearablesensing.com",
+    "title": "Home - Wearable Sensing | Dry EEG",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "Industry leading dry EEG systems with up to 19 channels that maintain research-grade signal quality, extreme comfort, VR compatibility, donning in under 3 minutes, and resistance against electrical and motion artifacts",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "url": "https://docs.openbci.com/ThirdParty/cEEGrid_Kit",
+    "title": "cEEGrid Kit | OpenBCI Documentation",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "This biosignal acquisition system allows for the discrete recording of electrophysiological changes (e.g., EEG, ECG, EMG) from inconspicuous electrodes positioned around the ears.",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "url": "https://platform.openai.com/docs/guides/structured-outputs",
+    "title": "Structured model outputs | OpenAI API",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "Responses Copy Page Structured model outputs Copy Page Ensure text responses from the model adhere to a JSON schema you define.",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "url": "https://patents.google.com/patent/US20190000338A1/en",
+    "title": "US20190000338A1 - Method and system for obtaining signals from dry eeg electrodes",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "is configured to move the EEG electrode in at least two dimensions, including an axial dimension and a lateral dimension to enable EEG electrode to contact the skin at different locations.",
+        "added": "2026-11-24"
+      },
+      {
+        "text": "are programmed with computer program instructions which, when executed cause the one or more physical processors to: obtain an impedance signal from the EEG electrode; and actuate the actuator to move the EEG electrode based on a comparison of the obtained impedance signal with an impedance threshold.",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "url": "https://patents.google.com/patent/US11622709B2",
+    "title": "US11622709B2 - Headset and electrodes for sensing bioelectrical potential and methods of operation thereof",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "can comprise an electrode tip body, one or more electrode legs coupled to the electrode tip body, and a conductive cushioning material coupled to a segment of at least one of the one or more electrode legs.",
+        "added": "2026-11-24"
+      },
+      {
+        "text": "can thus drive the electrode tip 144 forward and back into contact with the user's scalp and retain the electrode tip 144 in contact with the user's scalp within the target electrode tip 144 force range.",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "url": "https://www.nature.com/articles/s41586-023-06377-x",
+    "title": "A high-performance speech neuroprosthesis | Nature",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "Enabled by these high-resolution recordings, our study participant—who can no longer speak intelligibly owing to amyotrophic lateral sclerosis—achieved a 9.1% word error rate on a 50-word vocabulary (2.7 times fewer errors than the previous state-of-the-art speech BCI2) and a 23.8% word error rate on a 125,000-word vocabulary (the first successful demonstration, to our knowledge, of large-vocabulary decoding).",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "url": "https://www.nature.com/articles/s41586-023-06443-4",
+    "title": "A high-performance neuroprosthesis for speech decoding and avatar control | Nature",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "For text, we demonstrate accurate and rapid large-vocabulary decoding with a median rate of 78 words per minute and median word error rate of 25%.",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "url": "https://www.nature.com/articles/s41593-023-01304-9",
+    "title": "Semantic reconstruction of continuous language from non-invasive brain recordings | Nature Neuroscience",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "Here we introduce a non-invasive decoder that reconstructs continuous language from cortical semantic representations recorded using functional magnetic resonance imaging (fMRI).",
+        "added": "2026-11-24"
+      },
+      {
+        "text": "we tested whether successful decoding requires subject cooperation and found that subject cooperation is required both to train and to apply the decoder.",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?format=json&resultType=core&pageSize=1&query=EXT_ID%3A40816265%20AND%20SRC%3AMED",
+    "title": "Inner speech in motor cortex and implications for speech neuroprostheses.",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "Speech brain-computer interfaces (BCIs) show promise in restoring communication to people with paralysis but have also prompted discussions regarding their potential to decode private inner speech.",
+        "added": "2026-11-24"
+      },
+      {
+        "text": "Finally, we demonstrate high-fidelity strategies that prevent speech BCIs from unintentionally decoding private inner speech.",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "url": "https://arxiv.org/html/2610.20942v1",
+    "title": "How large an effect would we have seen? Positive controls, detection floors and dataset pitfalls in scalp-EEG speech decoding",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "How large an effect would we have seen? Positive controls, detection floors and dataset pitfalls in scalp-EEG speech decoding",
+        "added": "2026-11-24"
+      },
+      {
+        "text": "it means that the condition axis of ds003626 cannot serve as a covert-speech control.",
+        "added": "2026-11-24"
+      },
+      {
+        "text": "On ds003626, two lip electrodes decoded overt speech at 0.7430 and the eight external channels at 0.7068, against 0.4231 for the 128-channel scalp montage",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "url": "https://arxiv.org/abs/2404.15319",
+    "title": "[2404.15319] The largest EEG-based BCI reproducibility study for open science: the MOABB benchmark",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "Notably, Riemannian approaches utilizing spatial covariance matrices exhibit superior performance, underscoring the necessity for significant data volumes to achieve competitive outcomes with deep learning techniques.",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "url": "https://www.nature.com/articles/s41597-022-01147-2",
+    "title": "Thinking out loud, an open-access EEG-based BCI dataset for inner speech recognition | Scientific Data",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "Thinking out loud, an open-access EEG-based BCI dataset for inner speech recognition | Scientific Data",
+        "added": "2026-11-24"
+      },
+      {
+        "text": "A total of 1128 pronounced speech trials, 2236 inner speech trials and 2276 visualization condition trials, were acquired",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "url": "https://arxiv.org/abs/1911.13045",
+    "title": "[1911.13045] BETA: A Large Benchmark Database Toward SSVEP-BCI Application",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "The BETA database is composed of 64-channel Electroencephalogram (EEG) data from 70 subjects performing a 40-target cued-spelling task.",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "url": "https://arxiv.org/abs/2609.32743",
+    "title": "[2609.32743] Benchmarking EEG Foundation Models at Scale: Lessons from 20,000 Evaluations",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "able; (3) existing EEG FMs do not exhibit a consistent positive relationship between parameter count and downstream performance; (4) under a fixed architecture, increasing the pretraining data scale yields sustained downstream gains; and (5) channel-flexible FMs achieve higher",
+        "added": "2026-11-24"
+      },
+      {
+        "text": "re, increasing the pretraining data scale yields sustained downstream gains; and (5) channel-flexible FMs achieve higher absolute performance than channel-constrained models across most evaluated channel configurations. Together, these findings demonstrat",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "url": "https://www.nature.com/articles/s41593-026-02303-2",
+    "title": "Noninvasive decoding of typed sentences from human brain activity | Nature Neuroscience",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "With magnetoencephalography, Brain2Qwerty reaches, on average, a character error rate of 29% and substantially outperforms electroencephalography (character error rate: 65%).",
+        "added": "2026-11-24"
+      },
+      {
+        "text": "Here we introduce a noninvasive method to decode the production of sentences from brain activity and demonstrate its efficacy in a cohort of 35 healthy volunteers.",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "url": "https://github.com/mne-tools/mne-python",
+    "title": "MNE-Python — upstream repository",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "halographymegneuroimagingneurosciencepythonstatisticsvisualizationResourcesReadmeBSD-3-Clause licenseCode of conductCode of conductContributingContributingSecurity policySecurity policyCite this repositoryActivityCustom propertiesStars3.6k sta",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "url": "https://github.com/brainflow-dev/brainflow",
+    "title": "BrainFlow — upstream repository",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "It provides a uniform SDK to work with biosensors with a primary focus on neurointerfaces, all features available for free and distributed under MIT license.",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "url": "https://github.com/NeuroTechX/moabb",
+    "title": "MOABB — upstream repository",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "GitHub - NeuroTechX/moabb: Mother of All BCI Benchmarks · GitHub",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "url": "https://github.com/braindecode/braindecode",
+    "title": "Braindecode — upstream repository",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "lographymagnetoencephalographymegneuroimagingneurosciencepythonpytorchResourcesReadmeBSD-3-Clause licenseContributingContributingCite this repositoryActivityCustom propertiesStars1.3k starsWatchers19 watchingForks300 forksReport repositorymasterBr",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng",
+    "title": "Regulation - 2016/679 - EN - gdpr - EUR-Lex",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "This Regulation also provides a margin of manoeuvre for Member States to specify its rules, including for the processing of special categories of personal data (‘sensitive data’).",
+        "added": "2026-11-24"
+      },
+      {
+        "text": "Personal data concerning health should include all data pertaining to the health status of a data subject which reveal information relating to the past, current or future physical or mental health status of the data subject.",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "url": "https://moabb.neurotechx.com/docs/generated/moabb.datasets.BNCI2014_001.html",
+    "title": "moabb.datasets.BNCI2014_001 — MOABB Documentation",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "Two sessions on different days were recorded for each subject.",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 27,
+    "url": "https://moabb.neurotechx.com/docs/generated/moabb.datasets.BI2015a.html",
+    "title": "moabb.datasets.BI2015a — MOABB Documentation",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "P300 / ERP, 2 classes (Target vs NonTarget)",
+        "added": "2026-11-24"
+      },
+      {
+        "text": "class moabb.datasets.BI2015a(subjects=None, sessions=None, *, return_all_modalities=False)[source]#",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 28,
+    "url": "https://developer.riotgames.com/docs/valorant",
+    "title": "Riot Developer Portal",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "Products cannot create an unfair advantage for players, like a cheating program or giving some players an advantage that others would not otherwise have.",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 29,
+    "url": "https://github.com/BINE022/EEGPT",
+    "title": "EEGPT — official upstream repository",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "for Universal and Reliable Representation of EEG Signals' [NIPS 2024].ResourcesReadmeApache-2.0 licenseActivityStars321 starsWatchers5 watchingForks56 forksReport repositorymainBranchesTagsGo to fileCodeOpen more actions menuLatest commit History3 Commi",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 31,
+    "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?format=json&resultType=core&pageSize=1&query=DOI%3A10.1038/s41586-023-06377-x",
+    "title": "A high-performance speech neuroprosthesis.",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "Enabled by these high-resolution recordings, our study participant-who can no longer speak intelligibly owing to amyotrophic lateral sclerosis-achieved a 9.1% word error rate on a 50-word vocabulary (2.7 times fewer errors than the previous state-of-the-art speech BCI2) and a 23.8% word error rate on a 125,000-word vocabulary (the first successful demonstration, to our knowledge, of large-vocabulary decoding).",
+        "added": "2026-11-24"
+      },
+      {
+        "text": "Our participant's attempted speech was decoded  at 62 words per minute, which is 3.4 times as fast as the previous record8 and begins to approach the speed of natural conversation (160 words per minute9).",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 32,
+    "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?format=json&resultType=core&pageSize=1&query=DOI%3A10.1056/NEJMoa2314132",
+    "title": "An Accurate and Rapidly Calibrating Speech Neuroprosthesis.",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "cipant used it to communicate in self-paced conversations at a rate of approximately 32 words per minute for more than 248 cumulative hours.ConclusionsIn a person with ALS and severe dysarthria, an intracortical speech neuroprosthesis reached a level of",
+        "added": "2026-11-24"
+      },
+      {
+        "text": "a 125,000-word vocabulary. With further training data, the neuroprosthesis sustained 97.5% accuracy over a period of 8.4 months after surgical implantation, and the participant used it to communicate in self-paced conversations at a rate of",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 33,
+    "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/main/nav2_collision_monitor/README.md",
+    "title": "Nav2 Collision Monitor — upstream README",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "The Collision Monitor is a node providing an additional level of robot safety.",
+        "added": "2026-11-24"
+      },
+      {
+        "text": "This is analogous to safety sensor and hardware features",
+        "added": "2026-11-24"
+      }
+    ]
+  },
+  {
+    "id": 34,
+    "url": "https://github.com/935963004/LaBraM",
+    "title": "LaBraM — official upstream repository",
+    "accessed": "2026-11-24",
+    "quotes": [
+      {
+        "text": "GitHub - 935963004/LaBraM: [ICLR 2024 spotlight] Large Brain Model for Learning Generic Representations with Tremendous EEG Data in BCI · GitHub",
+        "added": "2026-11-24"
+      }
+    ]
+  }
+]

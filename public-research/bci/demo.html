@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<title>Rexzen Neural / interaction replay</title>
+<style>
+:root{color-scheme:light;--ink:#1c2723;--muted:#42554c;--line:#c9d2cb;--accent:#155c45;--paper:#f3f5f0;--white:#fbfcf8;font:16px/1.55 'Segoe UI',Arial,sans-serif}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink)}a{color:var(--accent)}main{max-width:940px;margin:auto;padding:42px 24px 72px}.kicker,.status,legend{font:700 .78rem/1.4 Consolas,monospace;text-transform:uppercase;letter-spacing:.1em}h1{font-size:clamp(2.1rem,6vw,3.75rem);line-height:1.02;margin:.35em 0 .27em;letter-spacing:-.05em}h2{margin:0 0 8px;line-height:1.1}.lead{max-width:65ch;color:var(--muted)}fieldset{border:1px solid var(--line);padding:16px 18px;margin:28px 0 14px;background:var(--white)}fieldset label{display:inline-flex;align-items:center;min-height:44px;margin-right:16px;gap:.25em}input{accent-color:var(--accent)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.panel{border:1px solid var(--line);background:var(--white);padding:20px}.row{display:flex;flex-wrap:wrap;gap:7px;margin:9px 0 12px}.status{display:inline-block;color:var(--accent);margin-bottom:10px}button{min-height:44px;padding:6px 12px;border:1px solid #81988a;color:var(--ink);background:var(--paper);font:600 .9rem/1.2 inherit;font-family:inherit;font-size:.91rem;font-weight:600;cursor:pointer}button:disabled{opacity:.42;cursor:not-allowed}button.strong{background:var(--accent);border-color:var(--accent);color:white}button:hover:not(:disabled){border-color:#0b352a}button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #3c8868;outline-offset:3px}.readout{border-top:1px solid var(--line);margin-top:15px;padding-top:11px}.callout{border:1px solid var(--line);padding:11px 15px;background:#e4eee7;font-size:.91rem}.fine{font-size:.86rem;color:var(--muted)}[hidden]{display:none !important} @media(max-width:650px){.grid{grid-template-columns:1fr}main{padding-top:24px}}
+</style></head><body><main>
+<p class="kicker">Rexzen Research / Neural R0</p><h1>Review before release.</h1>
+<p class="lead">Step through the proposed controls. The inputs below are hard-coded test cases. No electrodes, game client, AI, or robot are connected.</p>
+<fieldset><legend>Choose demo mode</legend><label><input type="radio" name="mode" value="question" checked> Ask a question</label><label><input type="radio" name="mode" value="chess"> Chess</label><label><input type="radio" name="mode" value="fps"> FPS menu</label><label><input type="radio" name="mode" value="robot"> Robot simulator</label></fieldset>
+<p class="callout">Try low quality first. The prototype should discard it. Then arm again, inject the clean test input, and confirm the proposal.</p>
+<div class="grid"><section class="panel" aria-labelledby="input-h"><span class="status" id="phase">IDLE</span><h2 id="input-h">Input replay</h2><p id="status" aria-live="polite"></p><div class="row"><button id="arm" class="strong">Arm once</button><button id="clean">Inject clean sample</button><button id="noisy">Inject poor quality</button><button id="disconnect">Simulate link loss</button></div><p class="fine">Arming expires after 20 s. Sample scores are examples, not measured EEG confidence.</p></section>
+<section class="panel" aria-labelledby="review-h"><span class="status">User control</span><h2 id="review-h">Review</h2><p id="proposal">No proposal yet.</p><div class="row"><button id="confirm" class="strong">Confirm</button><button id="cancel">Cancel</button></div><div class="readout" id="readout" hidden><p id="answer" aria-live="polite"></p><button id="listen">Play local voice</button><p class="fine" id="audio" aria-live="polite">Check the system audio route before playback. If no local voice is available, read the answer.</p></div></section></div>
+<p class="fine">Demo only. No model calls, collection or dispatch. <a href="https://rexzen.si/research/bci/">Rexzen Neural research release</a>.</p>
+</main><script>
+const TASKS = {
+  question: {
+    proposal: 'Break down the trade-offs between a 16-electrode wearable and a 32-electrode lab setup, then suggest the first three experiments we should run.',
+    answer: 'A 16-channel liner is the starting point. First, compare dry and wet contact after each refit. Second, test the decoder on a different day. Third, measure false proposals while armed and idle. Add electrodes only if they improve the measured trade-offs.',
+  },
+  chess: {proposal:'Play e2–e4 in the starting position.',answer:'e2–e4 recorded on the demo board. No engine or external game is connected.'},
+  fps: {proposal:'Select the movement practice menu.',answer:'Movement practice selected in the local mock-up. No game client or input events are connected.'},
+  robot: {proposal:'Return the simulated robot to dock A.',answer:'Dock A is shown as the simulator destination. No physical robot is connected.'},
+};
+const TTL=20_000;
+const initial = (mode='question') => ({mode,phase:'idle',until:0,last:0,response:'',message:'Disarmed. Choose a mode and arm one replay.'});
+function step(state,event) {
+  const {type,now}=event;
+  if (!Number.isFinite(now) || now<state.last) return state;
+  const base={...state,last:now};
+  const clear=(message,phase='idle')=>({...base,phase,until:0,response:'',message});
+  if (type==='mode' && Object.hasOwn(TASKS,event.mode)) return {...initial(event.mode),last:now};
+  if (type==='cancel') return clear('Cancelled. Nothing was sent.');
+  if (type==='disconnect') return clear('Link lost. Nothing was sent. Arm again to start a fresh replay.', 'fault');
+  if (base.until && now>=base.until) return clear('The replay expired. Nothing was sent.');
+  if (type==='arm' && !base.until) return {...clear('Armed. Inject sample scores to see what the gate does.', 'armed'),until:now+TTL};
+  if (type==='evidence' && (base.phase==='armed' || base.phase==='review')) {
+    const ok=[event.quality,event.confidence].every(n=>Number.isFinite(n)&&n>=0&&n<=1) && event.quality>=.8 && event.confidence>=.85;
+    if (!ok) return clear('Scores failed the gate. No proposal was kept.', 'fault');
+    if (base.phase==='armed') return {...base,phase:'review',message:'Proposal only. Verify the text, then explicitly confirm or cancel.'};
+  }
+  if (type==='confirm' && base.phase==='review') return {...clear('Confirmed locally. Nothing was sent to hardware or to a cloud model.', 'done'),response:TASKS[base.mode].answer};
+  return base;
+}
+
+const get=id=>document.getElementById(id);
+let state=initial();
+function send(type,extras={}){state=step(state,{type,now:performance.now(),...extras});render();}
+function render(){
+  get('phase').textContent=state.phase.toUpperCase();
+  if(get('status').textContent!==state.message) get('status').textContent=state.message;
+  const waiting=['armed','review'].includes(state.phase);
+  get('arm').disabled=waiting;
+  for(const id of ['clean','noisy','disconnect','cancel']) get(id).disabled=!waiting;
+  get('confirm').disabled=state.phase!=='review';
+  get('proposal').textContent=state.phase==='review'?TASKS[state.mode].proposal:'No proposal pending.';
+  get('readout').hidden=!state.response;
+  if(get('answer').textContent!==state.response) get('answer').textContent=state.response;
+}
+function stopAudio(){if('speechSynthesis' in window)window.speechSynthesis.cancel();}
+for(const id of ['arm','confirm','cancel','disconnect']) get(id).addEventListener('click',()=>{stopAudio();send(id);});
+get('clean').addEventListener('click',()=>send('evidence',{quality:.92,confidence:.94}));
+get('noisy').addEventListener('click',()=>send('evidence',{quality:.42,confidence:.94}));
+for(const input of document.querySelectorAll('[name=mode]')) input.addEventListener('change',()=>{stopAudio();send('mode',{mode:input.value});});
+get('listen').addEventListener('click',()=>{
+ if(!state.response||!('speechSynthesis' in window)) {get('audio').textContent='No system voice is available.';return;}
+ const voices=speechSynthesis.getVoices().filter(v=>v.localService && /^en\b/.test(v.lang));
+ if(!voices.length){get('audio').textContent='No on-device English voice is available. The text remains above.';return;}
+ const utterance=new SpeechSynthesisUtterance(state.response); utterance.voice=voices[0];
+ utterance.onend=()=>{get('audio').textContent='Playback finished.';};
+ utterance.onerror=()=>{get('audio').textContent='Playback was unavailable or cancelled.';};
+ stopAudio();speechSynthesis.speak(utterance);get('audio').textContent='Using the system audio route.';
+});
+window.addEventListener('pagehide',stopAudio);
+setInterval(()=>{if(state.until && performance.now()>=state.until)send('tick');},200);
+render();
+</script></body></html>

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="610" height="380" viewBox="0 0 610 380" role="img" aria-labelledby="title desc">
+<title id="title">Rexzen Neural design storyboard</title><desc id="desc">A schematic plain cap covering a guided harness and dry pads. The removable pod sits at the nape, separated from an ordinary earbud.</desc>
+<defs><pattern id="draftgrid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#729183" stroke-opacity=".16"/></pattern><pattern id="weave" width="4" height="5" patternUnits="userSpaceOnUse"><path d="M0 0l4 4" stroke="#abc2b5" stroke-width=".4" opacity=".36"/></pattern></defs>
+<rect width="610" height="380" rx="10" fill="#182922"/><rect x="16" y="16" width="578" height="348" rx="2" fill="url(#draftgrid)" stroke="#4c6a5d"/>
+<text x="34" y="43" fill="#c8dbcf" font-family="Consolas,monospace" font-size="13" letter-spacing="1.3">RXN / 01   SIDE VIEW</text><text x="576" y="43" text-anchor="end" fill="#c8dbcf" font-family="Consolas,monospace" font-size="12">NOT TO SCALE</text>
+<path d="M199 175 Q188 183 188 204 Q186 220 179 235 L166 251 Q163 258 181 260 L183 271 Q178 283 188 287 Q184 299 196 304 Q197 318 226 314 L257 307 Q276 301 284 315 L296 346 Q334 359 404 346 Q410 328 403 308 Q395 283 421 252 Q450 217 428 177 Z" fill="#c7b6a1" stroke="#ebd6c1" stroke-width="2" opacity=".92"/>
+<path d="M344 200 Q370 196 426 206 Q423 226 410 240 Q395 254 387 278 L377 265 Q369 248 368 230 Q364 214 344 200Z" fill="#384941" opacity=".86"/>
+<path d="M184 194 Q182 173 196 150 Q206 124 229 109 Q258 83 302 78 Q365 70 409 104 Q448 129 453 170 L449 201 Q417 205 390 198 Q350 188 329 190 L206 199 Z" fill="#475c52" stroke="#b8c9be" stroke-width="2"/>
+<path d="M184 194 Q182 173 196 150 Q206 124 229 109 Q258 83 302 78 Q365 70 409 104 Q448 129 453 170 L449 201 Q417 205 390 198 Q350 188 329 190 L206 199 Z" fill="url(#weave)"/>
+<path d="M203 184 C221 138 258 104 317 83 M313 82 Q381 123 386 195 M204 190 Q293 169 405 191" fill="none" stroke="#a9bcaf" stroke-width="1.25" opacity=".8"/>
+<path d="M187 181 Q166 179 115 195 Q81 209 76 221 Q109 225 148 216 L210 198 Q218 194 214 188Z" fill="#3c5046" stroke="#9eb5a7" stroke-width="2"/>
+<path d="M181 190 Q209 174 258 177 Q304 176 330 183 Q391 198 442 193 M209 167 Q251 105 318 98 Q381 99 424 148 L443 192" fill="none" stroke="#a9e5bb" stroke-width="2" stroke-dasharray="5 6"/>
+<g fill="#a9e5bb" stroke="#18352a" stroke-width="1.5"><circle cx="238" cy="133" r="5"/><circle cx="288" cy="103" r="5"/><circle cx="348" cy="102" r="5"/><circle cx="395" cy="128" r="5"/><circle cx="422" cy="155" r="5"/><circle cx="256" cy="177" r="5"/><circle cx="319" cy="181" r="5"/><circle cx="383" cy="193" r="5"/></g>
+<path d="M448 180 L456 190 L456 217 Q457 224 447 224 L419 225 Q408 223 409 215 L413 194 Z" fill="#22372e" stroke="#a8d7bb" stroke-width="2"/><path d="M425 216h16" stroke="#a8d7bb" stroke-width="2"/><circle cx="447" cy="213" r="2" fill="#a8d7bb"/>
+<path d="M315 239c5-24 23-34 34-25 11 8 9 25-4 37-7 7-13 12-23 9" fill="none" stroke="#8e7765" stroke-width="2"/><path d="M337 229c4-2 9 0 10 5 0 4-3 7-6 8l-1 12q-2 5-6 2l-1-15q-6-6 4-12Z" fill="#f0efdf" stroke="#665d4d" stroke-width="1.2"/>
+<g stroke="#a9e5bb" stroke-width="1.3" fill="none"><path d="M202 114h38l27-9"/><path d="M458 200h33l13-17"/><path d="M344 244l53 32h41"/></g>
+<g fill="#d5e9db" font-family="Consolas,monospace" font-size="12"><text x="44" y="110">Hidden sensing liner</text><text x="503" y="179">Rear pod</text><text x="443" y="280">Own earbud</text></g>
+<path d="M36 327h124m-124-6v12m124-12v12" stroke="#839a8d" fill="none"/><text x="36" y="349" fill="#b2c8ba" font-family="Consolas,monospace" font-size="11">FIT STUDY / CONCEPT ONLY</text>
+</svg>
