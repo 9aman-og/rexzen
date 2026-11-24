@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rexzen Neural — D4096 research instrument</title>
+<meta name="description" content="Explore Rexzen Neural’s 4,096-electrode non-invasive EEG design, interactive 3D map, reproducible evidence and investor brief.">
+<meta name="theme-color" content="#14171b"><link rel="canonical" href="https://rexzen.si/research/bci/dense-4096/">
+<meta property="og:type" content="website"><meta property="og:title" content="Rexzen Neural / D4096"><meta property="og:description" content="A 4,096-electrode scalp EEG research design. Explore the instrument, examine the evidence, and see the next prototype gate."><meta property="og:url" content="https://rexzen.si/research/bci/dense-4096/"><meta property="og:image" content="https://rexzen.si/research/bci/dense-4096/d4096-social.jpg">
+<link rel="icon" href="/brand/rexzen-favicon.svg"><link rel="stylesheet" href="d4096.css"><script type="module" src="d4096-page.mjs"></script>
+</head><body>
+<a class="skip" href="#content">Skip to content</a>
+<header class="site-chrome dark"><nav class="top wrap" aria-label="Rexzen">
+  <a class="brand" href="/"><img src="/brand/rexzen-wordmark-reverse.svg" alt="Rexzen home" width="129" height="28"></a>
+  <div class="top-links"><a href="/research/">Research</a><a href="#evidence">Evidence</a><a href="#roadmap">Roadmap</a></div>
+  <a class="button header-cta" href="investor-brief.pdf">Investor brief <span aria-hidden="true">↗</span></a>
+</nav></header>
+<main id="content" tabindex="-1">
+  <section class="hero dark" id="instrument" aria-labelledby="hero-title">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="dot"></span><span>Rexzen Neural</span><span class="slash">/</span><span>Research instrument D4096</span></p>
+        <h1 id="hero-title">4,096 points<br> of contact.</h1>
+        <p class="hero-deck">A high-density, non-invasive EEG design with one acquisition lane per scalp electrode. Can more usable contacts improve control outside the lab?</p>
+        <div class="hero-actions"><a class="button primary" href="#workbench">Try the fault workbench <span aria-hidden="true">↓</span></a><a href="#evidence">Read the evidence <span aria-hidden="true">↘</span></a></div>
+        <p class="status-note"><strong>Research stage</strong> · Digital checks and public-data analysis. No physical D4096 or on-head performance yet.</p>
+      </div>
+      <figure class="instrument" aria-labelledby="figure-caption">
+        <div class="model-stage" id="model-stage" data-renderer="poster" data-view="array">
+          <img id="model-poster" src="d4096-render.webp" alt="Rendering of the D4096 concept showing the scalp electrode layer and a low-profile outer rim." width="1000" height="700" fetchpriority="high" decoding="async">
+          <div class="stage-label"><span class="cross" aria-hidden="true"></span>RXN / D4096 <span class="stage-label-end">DESIGN MODEL</span></div>
+          <div class="stage-origin" aria-hidden="true"><span>+</span><span>+</span></div>
+          <div class="stage-foot"><span class="axis" aria-hidden="true">⌗</span><span id="render-status">Static design view</span></div>
+        </div>
+        <div class="instrument-controls" id="view-controls" hidden>
+          <div class="view-modes" role="group" aria-label="Instrument layer">
+            <button type="button" data-view="array" aria-pressed="true">Electrodes</button><button type="button" data-view="shell" aria-pressed="false">Cover</button><button type="button" data-view="layers" aria-pressed="false">Exploded view</button>
+          </div>
+          <div class="view-axes" role="group" aria-label="Rotate or reset the view">
+            <button type="button" data-camera="left" aria-label="Rotate left">←</button><button type="button" data-camera="right" aria-label="Rotate right">→</button><button type="button" data-camera="top" aria-label="Top view">↑</button><button type="button" data-camera="reset" aria-label="Reset camera">↺</button>
+          </div>
+        </div>
+        <figcaption id="figure-caption"><span>FIG 01 / ELECTRODE ASSEMBLY</span><span>Drawn from the published coordinate map. Cover is illustrative.</span></figcaption>
+      </figure>
+    </div>
+    <div class="wrap"><dl class="hero-spec" aria-label="D4096 design parameters">
+      <div><dt>Scalp addresses</dt><dd>4,096</dd></div><div><dt>64 acquisition tiles</dt><dd>64 <small>lanes each</small></dd></div><div><dt>Sample rate target</dt><dd>250 <small>Hz / channel</small></dd></div><div><dt>Native payload, modeled</dt><dd>24.576 <small>Mb/s</small></dd></div>
+    </dl></div>
+  </section>
+  <section class="chapter wrap" id="workbench" aria-labelledby="workbench-title">
+    <div class="chapter-head"><p class="eyebrow number">01 / Workbench</p><div><h2 id="workbench-title">A count isn’t coverage.</h2><p>The same number of failed contacts can leave a usable layout or a hole in one part of the array. Inject a fault to see how the proposed gate handles both. This replay runs locally and does not use live EEG.</p></div></div>
+    <div class="console" id="simulation" data-ready="false">
+      <div class="console-controls">
+        <label for="scenario">Fault scenario</label>
+        <select id="scenario" aria-describedby="sim-hint" disabled>
+          <option value="clean">Intact array</option><option value="one-tile">One tile lost</option><option value="two-tiles">Two tiles lost</option><option value="scattered">96 scattered contacts</option><option value="clustered">96 clustered contacts</option><option value="reference">Reference lost</option><option value="clock">Clock lost</option>
+        </select>
+        <p id="sim-hint">Predefined faults, not telemetry. The rule is at least 4,000 usable in total, 448 in each sector, and a valid reference and clock.</p>
+        <noscript><p>JavaScript is off. The <a href="coverage-results.json">scenario results</a> and static map are still available.</p></noscript>
+      </div>
+      <div class="console-output">
+        <div class="coverage-readout">
+        <div class="results" aria-label="Simulated result"><div><span>Present</span><strong id="sim-present">—</strong></div><div><span>Usable</span><strong id="sim-valid">—</strong></div><div><span>Weakest sector</span><strong id="sim-sector">—</strong></div></div>
+        <div class="sector-meter" role="list" aria-label="Usable sites by sector" id="sector-meter">
+          <span role="listitem" data-sector="0" title="Sector 01"><i></i><b>01</b></span><span role="listitem" data-sector="1" title="Sector 02"><i></i><b>02</b></span><span role="listitem" data-sector="2" title="Sector 03"><i></i><b>03</b></span><span role="listitem" data-sector="3" title="Sector 04"><i></i><b>04</b></span><span role="listitem" data-sector="4" title="Sector 05"><i></i><b>05</b></span><span role="listitem" data-sector="5" title="Sector 06"><i></i><b>06</b></span><span role="listitem" data-sector="6" title="Sector 07"><i></i><b>07</b></span><span role="listitem" data-sector="7" title="Sector 08"><i></i><b>08</b></span>
+        </div>
+        <div class="result-line" aria-live="polite" aria-atomic="true"><span id="sim-result">Waiting for scenario data</span><span id="sim-summary">Static results are available below.</span></div>
+        </div>
+        <figure class="coverage-figure" hidden>
+          <canvas width="256" height="256" id="coverage-map" role="img" aria-label="Electrode map"></canvas>
+          <figcaption><span aria-hidden="true"></span>Rejected position</figcaption>
+        </figure>
+      </div>
+    </div>
+    <div class="under-console"><a href="coverage-results.json">Scenario results and assumptions ↗</a><a href="#instrument">Return to the 3D model ↑</a></div>
+  </section>
+  <section class="evidence-band" id="evidence" aria-labelledby="evidence-title"><div class="wrap chapter">
+    <div class="chapter-head"><p class="eyebrow number">02 / Evidence</p><div><h2 id="evidence-title">What we can show today.</h2><p>The digital tests verify the simulated data path. The published EEG analysis asks a different question: did more channels help on this task?</p></div></div>
+    <div class="evidence-grid">
+      <div class="claims">
+        <article><p class="eyebrow">01 / Digital test</p><h3>480,000 packets</h3><p>Every signed sample matched in the clean synthetic loopback. Separate tests caught corruption, duplicates and missing tiles.</p><a href="bench-model.json">Read the loopback output ↗</a></article>
+        <article><p class="eyebrow">02 / Published EEG</p><h3>Density didn’t win this session.</h3><p>We reran one 80-trial, four-category visual task using subsets of a published 512-channel recording. Accuracy didn’t rise consistently with more channels.</p><a href="visual-study.json">Check the split and controls ↗</a></article>
+        <article><p class="eyebrow">03 / Still open</p><h3>Real fit. Real signal.</h3><p>Noise, long-wear contact through hair, use while moving and advantage over a lab baseline are unmeasured on Rexzen hardware. No speech or state-of-the-art claim.</p></article>
+      </div>
+      <figure class="plot" aria-labelledby="plot-caption">
+        <p class="eyebrow">Study S03 / Recorded scalp EEG</p><h3>Density vs. decoding</h3>
+        <img src="density-evidence.svg" width="600" height="284" alt="Post-stimulus balanced accuracy: 43.3% at 32 channels, 43.2% at 64, 42.8% at 128, 41.1% at 256, and 42.3% at 512. Chance is 25%." loading="lazy">
+        <figcaption id="plot-caption">One participant, one session. Lines show variation across 12 subsets at each smaller size, not confidence intervals. 512 uses every recorded site. <a href="https://www.nature.com/articles/s44172-026-00611-w">Original study ↗</a></figcaption>
+      </figure>
+    </div>
+  </div></section>
+  <section class="chapter wrap" id="roadmap" aria-labelledby="roadmap-title">
+    <div class="chapter-head"><p class="eyebrow number">03 / Prototype gates</p><div><h2 id="roadmap-title">Build the proof in stages.</h2><p>Invest in the contact and measurement problem before committing to a full custom array.</p></div></div>
+    <ol class="roadmap">
+      <li><span class="stage-id">D0</span><div><h3>64-contact bench coupon</h3><p>Measure contact stability, neighboring shorts and front-end noise on fixtures. Test fit on unpowered headforms before any cleared study.</p></div><span class="stage-state">Next milestone</span></li>
+      <li><span class="stage-id">D1</span><div><h3>512 channels on a head phantom</h3><p>Quantify reference and timing stability, and benchmark source localization against known electrical sources.</p></div><span class="stage-state">After D0</span></li>
+      <li><span class="stage-id">D2 / D3</span><div><h3>4,096-channel acquisition and comparison</h3><p>Prove every lane in hardware. After independent safety and study approval, run a blinded, matched comparison against established high-density systems.</p></div><span class="stage-state">After D1</span></li>
+    </ol>
+  </section>
+  <section class="file-band dark" id="diligence" aria-labelledby="files-title"><div class="wrap chapter file-grid">
+    <div><p class="eyebrow">04 / Diligence</p><h2 id="files-title">Under the hood.</h2><p>Use the one-pager in a meeting. Use the specs and data to challenge what it says.</p></div>
+    <ul class="file-list"><li><a href="investor-brief.pdf"><span>Investor brief</span><small aria-hidden="true">PDF · One page ↗</small></a></li><li><a href="engineering.html"><span>Engineering report</span><small aria-hidden="true">Source-linked spec ↗</small></a></li><li><a href="rexzen-d4096.pdf"><span>Engineering PDF</span><small>Printable ↗</small></a></li><li><a href="electrode-map.csv"><span>All electrode coordinates</span><small>CSV · 4,096 rows ↗</small></a></li><li><a href="rexzen-d4096-source.zip"><span>Original research bundle</span><small>Code and data ↗</small></a></li><li><a href="sources.json"><span>Source evidence</span><small>Primary sources ↗</small></a></li></ul>
+  </div></section>
+</main>
+<footer class="dark"><div class="wrap footer-grid"><a class="brand" href="/"><img src="/brand/rexzen-wordmark-reverse.svg" alt="Rexzen home" width="114" height="24"></a><p>Neural research / D4096<br>Research concept. Not for sale or medical use.</p><nav aria-label="More from Rexzen"><a href="/research/">Research</a><a href="/research/bci/">Neural R0</a><a href="THREE-LICENSE.txt">3D credits</a></nav></div></footer>
+</body></html>

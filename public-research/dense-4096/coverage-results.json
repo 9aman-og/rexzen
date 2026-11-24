@@ -1,0 +1,143 @@
+{
+  "scope": "Deterministic software fault-injection on the modeled D4096 electrode layout. No EEG, hardware or wearer measured. This gate does not run a decoder or authorize actions.",
+  "layout": {
+    "total": 4096,
+    "sectors": 8,
+    "sectorSize": 512,
+    "tiles": 64,
+    "tileSize": 64
+  },
+  "thresholds": {
+    "global": 4000,
+    "regional": 448
+  },
+  "details": "The regional floor of 448 per sector is a provisional one-tile-loss allowance. A detected loss of the global reference or clock invalidates every sample in a window. The clustered fixture selects a contiguous patch inside one sector; the scattered fixture disables 12 deterministic addresses per sector. Real contact quality, dispersion and thresholds need dedicated validation.",
+  "results": [
+    {
+      "scenario": "clean",
+      "label": "Intact array",
+      "present": 4096,
+      "valid": 4096,
+      "sectors": [
+        512,
+        512,
+        512,
+        512,
+        512,
+        512,
+        512,
+        512
+      ],
+      "reason": "qualified",
+      "weakestSector": 512
+    },
+    {
+      "scenario": "one-tile",
+      "label": "One tile lost",
+      "present": 4032,
+      "valid": 4032,
+      "sectors": [
+        512,
+        512,
+        512,
+        512,
+        448,
+        512,
+        512,
+        512
+      ],
+      "reason": "qualified",
+      "weakestSector": 448
+    },
+    {
+      "scenario": "two-tiles",
+      "label": "Two tiles lost",
+      "present": 3968,
+      "valid": 3968,
+      "sectors": [
+        512,
+        512,
+        512,
+        512,
+        384,
+        512,
+        512,
+        512
+      ],
+      "reason": "global-count",
+      "weakestSector": 384
+    },
+    {
+      "scenario": "scattered",
+      "label": "96 scattered contacts",
+      "present": 4096,
+      "valid": 4000,
+      "sectors": [
+        500,
+        500,
+        500,
+        500,
+        500,
+        500,
+        500,
+        500
+      ],
+      "reason": "qualified",
+      "weakestSector": 500
+    },
+    {
+      "scenario": "clustered",
+      "label": "96 clustered contacts",
+      "present": 4096,
+      "valid": 4000,
+      "sectors": [
+        512,
+        512,
+        512,
+        512,
+        416,
+        512,
+        512,
+        512
+      ],
+      "reason": "regional-count",
+      "weakestSector": 416
+    },
+    {
+      "scenario": "reference",
+      "label": "Reference lost",
+      "present": 4096,
+      "valid": 0,
+      "sectors": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "reason": "reference",
+      "weakestSector": 0
+    },
+    {
+      "scenario": "clock",
+      "label": "Clock lost",
+      "present": 4096,
+      "valid": 0,
+      "sectors": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "reason": "clock",
+      "weakestSector": 0
+    }
+  ]
+}
