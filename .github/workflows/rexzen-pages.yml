@@ -25,6 +25,10 @@ on:
       - aero-apps-source.manifest.json
       - aero-apps-source.*.b64
       - android/**
+      - public-research/dense-4096/**
+      - scripts/*d4096*
+      - scripts/publish_dense_research.py
+      - scripts/test_publish_dense_experience.py
   workflow_dispatch:
 
 permissions:
@@ -50,6 +54,14 @@ jobs:
         uses: actions/checkout@v6
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
+      - name: Check the D4096 research workbench
+        run: &check_d4096 |
+          node --test scripts/test-d4096-gate.mjs
+          node --check public-research/dense-4096/d4096-viewer.mjs
+          node --check public-research/dense-4096/d4096-page.mjs
+          node scripts/build-d4096-evidence.mjs
+          git diff --exit-code -- public-research/dense-4096/coverage-results.json public-research/dense-4096/density-evidence.svg
+          python3 scripts/test_publish_dense_experience.py
       - name: Prepare and check the public website
         shell: bash
         run: |
@@ -437,6 +449,8 @@ jobs:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
+      - name: Check the D4096 research workbench
+        run: *check_d4096
       - name: Verify and extract connected app source
         shell: bash
         run: *extract_aero_source
